@@ -35,25 +35,11 @@ namespace Omicron
 		}
 
 		public Omicron Has => this;
+		public Omicron Is => this;
 
 		public static Omicron Request(HttpMethod method, string uri)
 		{
 			return new Omicron(method, uri);
-		}
-
-		public Omicron Status(int statusCode)
-		{
-			_assertions.Add(response =>
-			{
-				var responseStatusCode = (int)response.StatusCode;
-
-				if (responseStatusCode != statusCode)
-				{
-					ThrowAssertionException("status", statusCode, responseStatusCode);
-				}
-			});
-
-			return this;
 		}
 
 		public async Task Run()
@@ -70,7 +56,14 @@ namespace Omicron
 			}
 		}
 
-		private void ThrowAssertionException(string targetName, object expectedValue, object actualValue)
+		internal Omicron Assert(Action<HttpResponseMessage> assertion)
+		{
+			_assertions.Add(assertion);
+
+			return this;
+		}
+
+		internal void Fail(string targetName, object expectedValue, object actualValue)
 		{
 			var message = CreateMessage(targetName, expectedValue, actualValue);
 
