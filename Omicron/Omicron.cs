@@ -38,9 +38,28 @@ namespace Omicron
 		public Omicron Is => this;
 
 		public static Omicron Request(HttpMethod method, string uri)
-		{
-			return new Omicron(method, uri);
-		}
+			=> new Omicron(method, uri);
+
+		public static Omicron Delete(string uri)
+			=> Request(HttpMethod.Delete, uri);
+
+		public static Omicron Get(string uri)
+			=> Request(HttpMethod.Get, uri);
+
+		public static Omicron Head(string uri)
+			=> Request(HttpMethod.Head, uri);
+
+		public static Omicron Options(string uri)
+			=> Request(HttpMethod.Options, uri);
+
+		public static Omicron Post(string uri)
+			=> Request(HttpMethod.Post, uri);
+
+		public static Omicron Put(string uri)
+			=> Request(HttpMethod.Put, uri);
+
+		public static Omicron Trace(string uri)
+			=> Request(HttpMethod.Trace, uri);
 
 		public async Task Run()
 		{
