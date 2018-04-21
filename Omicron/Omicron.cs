@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading.Tasks;
 using MockableHttp;
 
 namespace Omicron
@@ -55,11 +56,11 @@ namespace Omicron
 			return this;
 		}
 
-		public void Run()
+		public async Task Run()
 		{
 			using (var request = new HttpRequestMessage(_method, _uri))
 			{
-				using (var response = _httpService.SendAsync(request).GetAwaiter().GetResult())
+				using (var response = await _httpService.SendAsync(request))
 				{
 					foreach (var assertion in _assertions)
 					{

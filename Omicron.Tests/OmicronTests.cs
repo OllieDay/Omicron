@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using FluentAssertions;
 using MockableHttp;
 using NSubstitute;
@@ -18,7 +19,7 @@ namespace Omicron.Tests
 
 			var omicron = new Omicron(httpService, HttpMethod.Head, string.Empty);
 
-			var run = (Action)omicron.Run;
+			Func<Task> run = omicron.Run;
 
 			run.Should().NotThrow();
 		}
@@ -35,7 +36,7 @@ namespace Omicron.Tests
 			var omicron = new Omicron(httpService, HttpMethod.Head, string.Empty);
 			omicron.Has.Status(statusCode);
 
-			var run = (Action)omicron.Run;
+			Func<Task> run = omicron.Run;
 
 			run.Should().NotThrow();
 		}
@@ -52,7 +53,7 @@ namespace Omicron.Tests
 			var omicron = new Omicron(httpService, HttpMethod.Head, string.Empty);
 			omicron.Has.Status(expectedStatusCode);
 
-			var run = (Action)omicron.Run;
+			Func<Task> run = omicron.Run;
 
 			run.Should().Throw<OmicronAssertionException>().WithMessage($"Expected status {expectedStatusCode} but got {actualStatusCode}");
 		}
