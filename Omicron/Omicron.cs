@@ -93,8 +93,6 @@ namespace Omicron
 		}
 
 		private string CreateMessage(string targetName, object expectedValue, object actualValue)
-		{
-			return $"Expected {targetName} {expectedValue} but got {actualValue}";
-		}
+			=> $"Expected {targetName} {expectedValue} but got {actualValue}";
 	}
 }
