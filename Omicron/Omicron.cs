@@ -75,12 +75,15 @@ namespace Omicron
 			}
 		}
 
-		internal Omicron Assert(Action<HttpResponseMessage> assertion)
+		internal Omicron Return(Action action)
 		{
-			_assertions.Add(assertion);
+			action();
 
 			return this;
 		}
+
+		internal Omicron AddAssertion(Action<HttpResponseMessage> assertion)
+			=> Return(() => _assertions.Add(assertion));
 
 		internal void Fail(string targetName, object expectedValue, object actualValue)
 		{

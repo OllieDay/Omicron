@@ -3,8 +3,7 @@ namespace Omicron
 	public static class OmicronStatusExtensions
 	{
 		public static Omicron Status(this Omicron @this, int statusCode)
-		{
-			@this.Assert(response =>
+			=> @this.AddAssertion(response =>
 			{
 				var responseStatusCode = (int)response.StatusCode;
 
@@ -13,9 +12,6 @@ namespace Omicron
 					@this.Fail("status", statusCode, responseStatusCode);
 				}
 			});
-
-			return @this;
-		}
 
 		public static Omicron Continue(this Omicron @this)
 			=> @this.Status(100);
