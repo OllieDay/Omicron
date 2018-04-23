@@ -11,6 +11,7 @@ namespace Omicron
 		private readonly IHttpService _httpService;
 		private readonly HttpMethod _method;
 		private readonly string _uri;
+		private readonly IList<Action<HttpRequestMessage>> _modifications = new List<Action<HttpRequestMessage>>();
 		private readonly IList<Action<HttpResponseMessage>> _assertions = new List<Action<HttpResponseMessage>>();
 
 		internal Omicron(IHttpService httpService, HttpMethod method, string uri)
@@ -56,6 +57,11 @@ namespace Omicron
 		{
 			using (var request = new HttpRequestMessage(_method, _uri))
 			{
+				foreach (var modification in _modifications)
+				{
+					modification(request);
+				}
+
 				using (var response = await _httpService.SendAsync(request))
 				{
 					foreach (var assertion in _assertions)
@@ -75,6 +81,9 @@ namespace Omicron
 
 			return this;
 		}
+
+		internal Omicron AddModification(Action<HttpRequestMessage> modification)
+			=> Return(() => _modifications.Add(modification));
 
 		internal Omicron AddAssertion(Action<HttpResponseMessage> assertion)
 			=> Return(() => _assertions.Add(assertion));
