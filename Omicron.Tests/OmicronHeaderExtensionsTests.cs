@@ -12,7 +12,11 @@ namespace Omicron.Tests
 	public sealed class OmicronHeaderExtensionsTests
 	{
 		[Fact]
-		public async Task ShouldAddHeader()
+		public async Task ShouldAddHeaderWithValues()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Header("X-Omicron", "Omicron 1", "Omicron 2"), "X-Omicron", "Omicron 1", "Omicron 2");
+
+		[Fact]
+		public async Task ShouldAddHeaderWithValue()
 			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Header("X-Omicron", "Omicron"), "X-Omicron", "Omicron");
 
 		[Fact]
@@ -27,7 +31,7 @@ namespace Omicron.Tests
 		public async Task ShouldAddAcceptHeaderWithMediaTypeAndQuality()
 			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Accept("text/plain", 0), "Accept", "text/plain; q=0.0");
 
-		private async Task SetHeaderAndVerifyIsSet(Action<Omicron> setter, string name, string expectedValue)
+		private async Task SetHeaderAndVerifyIsSet(Action<Omicron> setter, string name, params string[] expectedValues)
 		{
 			var httpService = Substitute.For<IHttpService>();
 			var omicron = new Omicron(httpService, HttpMethod.Head, string.Empty);
@@ -37,18 +41,18 @@ namespace Omicron.Tests
 			await omicron.Run();
 
 			await httpService.Received().SendAsync(Arg.Is<HttpRequestMessage>(request =>
-				IsHeaderSet(request.Headers, name, expectedValue)
+				IsHeaderSet(request.Headers, name, expectedValues)
 			));
 		}
 
-		private bool IsHeaderSet(HttpRequestHeaders headers, string name, string expectedValue)
+		private bool IsHeaderSet(HttpRequestHeaders headers, string name, params string[] expectedValues)
 		{
 			if (!headers.TryGetValues(name, out var actualValues))
 			{
 				return false;
 			}
 
-			return expectedValue == actualValues.First();
+			return actualValues.SequenceEqual(expectedValues);
 		}
 	}
 }

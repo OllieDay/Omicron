@@ -6,11 +6,8 @@ namespace Omicron
 {
 	public static class OmicronHeaderExtensions
 	{
-		public static Omicron Header(this Omicron @this, string name, IEnumerable<string> values)
+		public static Omicron Header(this Omicron @this, string name, params string[] values)
 			=> @this.AddModification(request => request.Headers.Add(name, values));
-
-		public static Omicron Header(this Omicron @this, string name, string value)
-			=> @this.AddModification(request => request.Headers.Add(name, value));
 
 		public static Omicron Accept(this Omicron @this, MediaTypeWithQualityHeaderValue value)
 			=> @this.AddHeaderValue(headers => headers.Accept, value);
