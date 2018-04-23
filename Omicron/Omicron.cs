@@ -26,6 +26,7 @@ namespace Omicron
 
 		}
 
+		public Omicron With => this;
 		public Omicron Has => this;
 		public Omicron Is => this;
 
