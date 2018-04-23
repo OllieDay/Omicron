@@ -15,6 +15,18 @@ namespace Omicron.Tests
 		public async Task ShouldAddHeaderWhenHeaderIsAdded()
 			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Header("X-Omicron", "Omicron"), "X-Omicron", "Omicron");
 
+		[Fact]
+		public async Task ShouldAddAcceptHeaderWithMediaTypeWithQualityHeaderValue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Accept(new MediaTypeWithQualityHeaderValue("text/plain")), "Accept", "text/plain");
+
+		[Fact]
+		public async Task ShouldAddAcceptHeaderWithMediaType()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Accept("text/plain"), "Accept", "text/plain");
+
+		[Fact]
+		public async Task ShouldAddAcceptHeaderWithMediaTypeAndQuality()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Accept("text/plain", 0), "Accept", "text/plain; q=0.0");
+
 		private async Task SetHeaderAndVerifyIsSet(Action<Omicron> setter, string name, string expectedValue)
 		{
 			var httpService = Substitute.For<IHttpService>();
