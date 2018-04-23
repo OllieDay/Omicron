@@ -6,32 +6,23 @@ using MockableHttp;
 
 namespace Omicron
 {
-	public sealed class Omicron
+	public sealed class Omicron : IDisposable
 	{
-		private static IHttpService _httpService;
-
+		private readonly IHttpService _httpService;
 		private readonly HttpMethod _method;
 		private readonly string _uri;
 		private readonly IList<Action<HttpResponseMessage>> _assertions = new List<Action<HttpResponseMessage>>();
 
 		internal Omicron(IHttpService httpService, HttpMethod method, string uri)
 		{
-			// instance should not be shared between tests so we can mock the behaviour
 			_httpService = httpService;
 			_method = method;
 			_uri = uri;
 		}
 
-		private Omicron(HttpMethod method, string uri)
+		private Omicron(HttpMethod method, string uri) : this(new HttpService(), method, uri)
 		{
-			// instances should be shared between tests to prevent a new socket being created for each instance
-			if (_httpService == null)
-			{
-				_httpService = new HttpService();
-			}
 
-			_method = method;
-			_uri = uri;
 		}
 
 		public Omicron Has => this;
@@ -74,6 +65,9 @@ namespace Omicron
 				}
 			}
 		}
+
+		public void Dispose()
+			=> _httpService.Dispose();
 
 		internal Omicron Return(Action action)
 		{
