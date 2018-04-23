@@ -12,7 +12,7 @@ namespace Omicron.Tests
 	public sealed class OmicronHeaderExtensionsTests
 	{
 		[Fact]
-		public async Task ShouldAddHeaderWhenHeaderIsAdded()
+		public async Task ShouldAddHeader()
 			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Header("X-Omicron", "Omicron"), "X-Omicron", "Omicron");
 
 		[Fact]
