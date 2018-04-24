@@ -53,6 +53,18 @@ namespace Omicron
 
 		public static Omicron Authorization(this Omicron @this, string scheme, string parameter)
 			=> @this.Authorization(new AuthenticationHeaderValue(scheme, parameter));
+
+		public static Omicron CacheControl(this Omicron @this, CacheControlHeaderValue value)
+			=> @this.AddModification(request => request.Headers.CacheControl = value);
+
+		public static Omicron Connection(this Omicron @this, string value)
+			=> @this.AddHeaderValue(headers => headers.Connection, value);
+
+		public static Omicron ConnectionClose(this Omicron @this, bool value)
+			=> @this.AddModification(request => request.Headers.ConnectionClose = value);
+
+		public static Omicron Date(this Omicron @this, DateTimeOffset value)
+			=> @this.AddModification(request => request.Headers.Date = value);
 		internal static Omicron AddHeaderValue<T>(this Omicron @this, Func<HttpRequestHeaders, ICollection<T>> selector, T value)
 			=> @this.Return(() => @this.AddModification(request => selector(request.Headers).Add(value)));
 	}

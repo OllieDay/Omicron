@@ -79,6 +79,35 @@ namespace Omicron.Tests
 		public async Task ShouldAddAuthorizationHeaderWithSchemeAndParameter()
 			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Authorization("Basic", "..."), "Authorization", "Basic ...");
 
+		[Fact]
+		public async Task ShouldAddCacheControlHeaderWithCacheControlHeaderValue()
+		{
+			var value = new CacheControlHeaderValue
+			{
+				NoCache = true,
+				MaxAge = TimeSpan.FromSeconds(1),
+				MaxStale = true
+			};
+
+			await SetHeaderAndVerifyIsSet(omicron => omicron.With.CacheControl(value), "Cache-Control", "no-cache, max-age=1, max-stale");
+		}
+
+		[Fact]
+		public async Task ShouldAddConnectionHeaderWithValue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Connection("keep-alive"), "Connection", "keep-alive");
+
+		[Fact]
+		public async Task ShouldAddConnectionCloseHeaderWithValue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.ConnectionClose(true), "Connection", "close");
+
+		[Fact]
+		public async Task ShouldAddDateHeaderWithValue()
+		{
+			var value = DateTimeOffset.Now;
+
+			await SetHeaderAndVerifyIsSet(omicron => omicron.With.Date(value), "Date", value.ToString("r"));
+		}
+
 		private async Task SetHeaderAndVerifyIsSet(Action<Omicron> setter, string name, params string[] expectedValues)
 		{
 			var httpService = Substitute.For<IHttpService>();
