@@ -18,6 +18,33 @@ namespace Omicron
 		public static Omicron Accept(this Omicron @this, string mediaType, double quality)
 			=> @this.Accept(new MediaTypeWithQualityHeaderValue(mediaType, quality));
 
+		public static Omicron AcceptCharset(this Omicron @this, StringWithQualityHeaderValue value)
+			=> @this.AddHeaderValue(headers => headers.AcceptCharset, value);
+
+		public static Omicron AcceptCharset(this Omicron @this, string value)
+			=> @this.AcceptCharset(new StringWithQualityHeaderValue(value));
+
+		public static Omicron AcceptCharset(this Omicron @this, string value, double quality)
+			=> @this.AcceptCharset(new StringWithQualityHeaderValue(value, quality));
+
+		public static Omicron AcceptEncoding(this Omicron @this, StringWithQualityHeaderValue value)
+			=> @this.AddHeaderValue(headers => headers.AcceptEncoding, value);
+
+		public static Omicron AcceptEncoding(this Omicron @this, string value)
+			=> @this.AcceptEncoding(new StringWithQualityHeaderValue(value));
+
+		public static Omicron AcceptEncoding(this Omicron @this, string value, double quality)
+			=> @this.AcceptEncoding(new StringWithQualityHeaderValue(value, quality));
+
+		public static Omicron AcceptLanguage(this Omicron @this, StringWithQualityHeaderValue value)
+			=> @this.AddHeaderValue(headers => headers.AcceptLanguage, value);
+
+		public static Omicron AcceptLanguage(this Omicron @this, string value)
+			=> @this.AcceptLanguage(new StringWithQualityHeaderValue(value));
+
+		public static Omicron AcceptLanguage(this Omicron @this, string value, double quality)
+			=> @this.AcceptLanguage(new StringWithQualityHeaderValue(value, quality));
+
 		internal static Omicron AddHeaderValue<T>(this Omicron @this, Func<HttpRequestHeaders, ICollection<T>> selector, T value)
 			=> @this.Return(() => @this.AddModification(request => selector(request.Headers).Add(value)));
 	}
