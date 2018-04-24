@@ -101,6 +101,10 @@ namespace Omicron.Tests
 			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.ConnectionClose(true), "Connection", "close");
 
 		[Fact]
+		public async Task ShouldNotAddConnectionCloseHeaderWithValue()
+			=> await SetHeaderAndVerifyIsNotSet(omicron => omicron.With.ConnectionClose(false), "Connection");
+
+		[Fact]
 		public async Task ShouldAddDateHeaderWithValue()
 		{
 			var value = DateTimeOffset.Now;
