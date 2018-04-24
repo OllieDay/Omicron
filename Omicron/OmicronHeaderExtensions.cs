@@ -45,6 +45,14 @@ namespace Omicron
 		public static Omicron AcceptLanguage(this Omicron @this, string value, double quality)
 			=> @this.AcceptLanguage(new StringWithQualityHeaderValue(value, quality));
 
+		public static Omicron Authorization(this Omicron @this, AuthenticationHeaderValue value)
+			=> @this.AddModification(request => request.Headers.Authorization = value);
+
+		public static Omicron Authorization(this Omicron @this, string scheme)
+			=> @this.Authorization(new AuthenticationHeaderValue(scheme));
+
+		public static Omicron Authorization(this Omicron @this, string scheme, string parameter)
+			=> @this.Authorization(new AuthenticationHeaderValue(scheme, parameter));
 		internal static Omicron AddHeaderValue<T>(this Omicron @this, Func<HttpRequestHeaders, ICollection<T>> selector, T value)
 			=> @this.Return(() => @this.AddModification(request => selector(request.Headers).Add(value)));
 	}

@@ -67,6 +67,18 @@ namespace Omicron.Tests
 		public async Task ShouldAddAcceptLanguageHeaderWithValueAndQuality()
 			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.AcceptLanguage("en", 0), "Accept-Language", "en; q=0.0");
 
+		[Fact]
+		public async Task ShouldAddAuthorizationHeaderWithAuthenticationHeaderValue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Authorization(new AuthenticationHeaderValue("...")), "Authorization", "...");
+
+		[Fact]
+		public async Task ShouldAddAuthorizationHeaderWithScheme()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Authorization("..."), "Authorization", "...");
+
+		[Fact]
+		public async Task ShouldAddAuthorizationHeaderWithSchemeAndParameter()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Authorization("Basic", "..."), "Authorization", "Basic ...");
+
 		private async Task SetHeaderAndVerifyIsSet(Action<Omicron> setter, string name, params string[] expectedValues)
 		{
 			var httpService = Substitute.For<IHttpService>();
