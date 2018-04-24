@@ -65,6 +65,19 @@ namespace Omicron
 
 		public static Omicron Date(this Omicron @this, DateTimeOffset value)
 			=> @this.AddModification(request => request.Headers.Date = value);
+
+		public static Omicron Expect(this Omicron @this, NameValueWithParametersHeaderValue value)
+			=> @this.AddHeaderValue(headers => headers.Expect, value);
+
+		public static Omicron Expect(this Omicron @this, string name)
+			=> @this.Expect(new NameValueWithParametersHeaderValue(name));
+
+		public static Omicron Expect(this Omicron @this, string name, string value)
+			=> @this.Expect(new NameValueWithParametersHeaderValue(name, value));
+
+		public static Omicron ExpectContinue(this Omicron @this, bool value)
+			=> @this.AddModification(request => request.Headers.ExpectContinue = value);
+
 		internal static Omicron AddHeaderValue<T>(this Omicron @this, Func<HttpRequestHeaders, ICollection<T>> selector, T value)
 			=> @this.Return(() => @this.AddModification(request => selector(request.Headers).Add(value)));
 	}

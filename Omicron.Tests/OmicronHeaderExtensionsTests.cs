@@ -108,7 +108,27 @@ namespace Omicron.Tests
 			await SetHeaderAndVerifyIsSet(omicron => omicron.With.Date(value), "Date", value.ToString("r"));
 		}
 
-		private async Task SetHeaderAndVerifyIsSet(Action<Omicron> setter, string name, params string[] expectedValues)
+		[Fact]
+		public async Task ShouldAddExpectHeaderWithNameValueWithParametersHeaderValue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Expect(new NameValueWithParametersHeaderValue("name", "value")), "Expect", "name=value");
+
+		[Fact]
+		public async Task ShouldAddExpectHeaderWithName()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Expect("..."), "Expect", "...");
+
+		[Fact]
+		public async Task ShouldAddExpectHeaderWithNameAndValue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Expect("name", "value"), "Expect", "name=value");
+
+		[Fact]
+		public async Task ShouldAddExpectContinueHeaderWithNameAndValue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.ExpectContinue(true), "Expect", "100-continue");
+
+		[Fact]
+		public async Task ShouldNotAddExpectContinueHeaderWithNameAndValue()
+			=> await SetHeaderAndVerifyIsNotSet(omicron => omicron.With.ExpectContinue(false), "Expect");
+
+		private static async Task SetHeaderAndVerifyIsSet(Action<Omicron> setter, string name, params string[] expectedValues)
 		{
 			var httpService = Substitute.For<IHttpService>();
 			var omicron = new Omicron(httpService, HttpMethod.Head, string.Empty);
@@ -122,7 +142,21 @@ namespace Omicron.Tests
 			));
 		}
 
-		private bool IsHeaderSet(HttpRequestHeaders headers, string name, params string[] expectedValues)
+		private static async Task SetHeaderAndVerifyIsNotSet(Action<Omicron> setter, string name)
+		{
+			var httpService = Substitute.For<IHttpService>();
+			var omicron = new Omicron(httpService, HttpMethod.Head, string.Empty);
+
+			setter(omicron);
+
+			await omicron.Run();
+
+			await httpService.Received().SendAsync(Arg.Is<HttpRequestMessage>(request =>
+				!IsHeaderSet(request.Headers, name)
+			));
+		}
+
+		private static bool IsHeaderSet(HttpRequestHeaders headers, string name, params string[] expectedValues)
 		{
 			if (!headers.TryGetValues(name, out var actualValues))
 			{
