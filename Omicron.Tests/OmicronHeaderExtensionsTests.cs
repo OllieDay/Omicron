@@ -142,19 +142,19 @@ namespace Omicron.Tests
 
 		[Fact]
 		public async Task ShouldAddIfMatchHeaderWithEntityTagHeaderValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfMatch(new EntityTagHeaderValue(@"""abc""")), "If-Match", @"""abc""");
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfMatch(new EntityTagHeaderValue(@"""...""")), "If-Match", @"""...""");
 
 		[Fact]
 		public async Task ShouldAddIfMatchHeaderWithTag()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfMatch(@"""abc"""), "If-Match", @"""abc""");
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfMatch(@"""..."""), "If-Match", @"""...""");
 
 		[Fact]
 		public async Task ShouldAddIfMatchHeaderWithTagAndIsWeakTrue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfMatch(@"""abc""", true), "If-Match", @"W/""abc""");
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfMatch(@"""...""", true), "If-Match", @"W/""...""");
 
 		[Fact]
 		public async Task ShouldAddIfMatchHeaderWithTagAndIsWeakFalse()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfMatch(@"""abc""", false), "If-Match", @"""abc""");
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfMatch(@"""...""", false), "If-Match", @"""...""");
 
 		[Fact]
 		public async Task ShouldAddIfModifiedSinceHeaderWithValue()
@@ -166,23 +166,23 @@ namespace Omicron.Tests
 
 		[Fact]
 		public async Task ShouldAddIfNoneMatchHeaderWithEntityTagHeaderValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfNoneMatch(new EntityTagHeaderValue(@"""abc""")), "If-None-Match", @"""abc""");
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfNoneMatch(new EntityTagHeaderValue(@"""...""")), "If-None-Match", @"""...""");
 
 		[Fact]
 		public async Task ShouldAddIfNoneMatchHeaderWithTag()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfNoneMatch(@"""abc"""), "If-None-Match", @"""abc""");
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfNoneMatch(@"""..."""), "If-None-Match", @"""...""");
 
 		[Fact]
 		public async Task ShouldAddIfNoneMatchHeaderWithTagAndIsWeakTrue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfNoneMatch(@"""abc""", true), "If-None-Match", @"W/""abc""");
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfNoneMatch(@"""...""", true), "If-None-Match", @"W/""...""");
 
 		[Fact]
 		public async Task ShouldAddIfNoneMatchHeaderWithTagAndIsWeakFalse()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfNoneMatch(@"""abc""", false), "If-None-Match", @"""abc""");
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfNoneMatch(@"""...""", false), "If-None-Match", @"""...""");
 
 		[Fact]
 		public async Task ShouldAddIfRangeHeaderWithRangeConditionHeaderValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfRange(new RangeConditionHeaderValue(@"""abc""")), "If-Range", @"""abc""");
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfRange(new RangeConditionHeaderValue(@"""...""")), "If-Range", @"""...""");
 
 		[Fact]
 		public async Task ShouldAddIfRangeHeaderWithValue()
@@ -194,15 +194,15 @@ namespace Omicron.Tests
 
 		[Fact]
 		public async Task ShouldAddIfRangeHeaderWithTag()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfRange(@"""abc"""), "If-Range", @"""abc""");
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfRange(@"""..."""), "If-Range", @"""...""");
 
 		[Fact]
 		public async Task ShouldAddIfRangeHeaderWithTagAndIsWeakTrue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfRange(@"""abc""", true), "If-Range", @"W/""abc""");
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfRange(@"""...""", true), "If-Range", @"W/""...""");
 
 		[Fact]
 		public async Task ShouldAddIfRangeHeaderWithTagAndIsWeakFalse()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfRange(@"""abc""", false), "If-Range", @"""abc""");
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfRange(@"""...""", false), "If-Range", @"""...""");
 
 		[Fact]
 		public async Task ShouldAddIfUnmodifiedSinceHeaderWithValue()
