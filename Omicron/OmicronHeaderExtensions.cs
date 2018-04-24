@@ -117,6 +117,27 @@ namespace Omicron
 		public static Omicron IfRange(this Omicron @this, string tag, bool isWeak)
 			=> @this.IfRange(new RangeConditionHeaderValue(new EntityTagHeaderValue(tag, isWeak)));
 
+		public static Omicron IfUnmodifiedSince(this Omicron @this, DateTimeOffset value)
+			=> @this.AddModification(request => request.Headers.IfUnmodifiedSince = value);
+
+		public static Omicron MaxForwards(this Omicron @this, int value)
+			=> @this.AddModification(request => request.Headers.MaxForwards = value);
+
+		public static Omicron Pragma(this Omicron @this, NameValueHeaderValue value)
+			=> @this.AddHeaderValue(headers => headers.Pragma, value);
+
+		public static Omicron Pragma(this Omicron @this, string name)
+			=> @this.Pragma(new NameValueHeaderValue(name));
+
+		public static Omicron ProxyAuthorization(this Omicron @this, AuthenticationHeaderValue value)
+			=> @this.AddModification(request => request.Headers.Authorization = value);
+
+		public static Omicron ProxyAuthorization(this Omicron @this, string scheme)
+			=> @this.ProxyAuthorization(new AuthenticationHeaderValue(scheme));
+
+		public static Omicron ProxyAuthorization(this Omicron @this, string scheme, string parameter)
+			=> @this.ProxyAuthorization(new AuthenticationHeaderValue(scheme, parameter));
+
 		internal static Omicron AddHeaderValue<T>(this Omicron @this, Func<HttpRequestHeaders, ICollection<T>> selector, T value)
 			=> @this.Return(() => @this.AddModification(request => selector(request.Headers).Add(value)));
 	}

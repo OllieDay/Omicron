@@ -204,6 +204,38 @@ namespace Omicron.Tests
 		public async Task ShouldAddIfRangeHeaderWithTagAndIsWeakFalse()
 			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfRange(@"""abc""", false), "If-Range", @"""abc""");
 
+		[Fact]
+		public async Task ShouldAddIfUnmodifiedSinceHeaderWithValue()
+		{
+			var value = DateTimeOffset.Now;
+
+			await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfUnmodifiedSince(value), "If-Unmodified-Since", value.ToString("r"));
+		}
+
+		[Fact]
+		public async Task ShouldAddMaxForwardsHeaderWithValue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.MaxForwards(0), "Max-Forwards", "0");
+
+		[Fact]
+		public async Task ShouldAddPragmaHeaderWithNameValueHeaderValue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Pragma(new NameValueHeaderValue("no-cache")), "Pragma", "no-cache");
+
+		[Fact]
+		public async Task ShouldAddPragmaHeaderWithName()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Pragma("no-cache"), "Pragma", "no-cache");
+
+		[Fact]
+		public async Task ShouldAddProxyAuthorizationHeaderWithAuthenticationHeaderValue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.ProxyAuthorization(new AuthenticationHeaderValue("...")), "Authorization", "...");
+
+		[Fact]
+		public async Task ShouldAddProxyAuthorizationHeaderWithScheme()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.ProxyAuthorization("..."), "Authorization", "...");
+
+		[Fact]
+		public async Task ShouldAddProxyAuthorizationHeaderWithSchemeAndParameter()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.ProxyAuthorization("Basic", "..."), "Authorization", "Basic ...");
+
 		private static async Task SetHeaderAndVerifyIsSet(Action<Omicron> setter, string name, params string[] expectedValues)
 		{
 			var httpService = Substitute.For<IHttpService>();
