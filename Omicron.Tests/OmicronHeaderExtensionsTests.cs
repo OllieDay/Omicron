@@ -156,6 +156,54 @@ namespace Omicron.Tests
 		public async Task ShouldAddIfMatchHeaderWithTagAndIsWeakFalse()
 			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfMatch(@"""abc""", false), "If-Match", @"""abc""");
 
+		[Fact]
+		public async Task ShouldAddIfModifiedSinceHeaderWithValue()
+		{
+			var value = DateTimeOffset.Now;
+
+			await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfModifiedSince(value), "If-Modified-Since", value.ToString("r"));
+		}
+
+		[Fact]
+		public async Task ShouldAddIfNoneMatchHeaderWithEntityTagHeaderValue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfNoneMatch(new EntityTagHeaderValue(@"""abc""")), "If-None-Match", @"""abc""");
+
+		[Fact]
+		public async Task ShouldAddIfNoneMatchHeaderWithTag()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfNoneMatch(@"""abc"""), "If-None-Match", @"""abc""");
+
+		[Fact]
+		public async Task ShouldAddIfNoneMatchHeaderWithTagAndIsWeakTrue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfNoneMatch(@"""abc""", true), "If-None-Match", @"W/""abc""");
+
+		[Fact]
+		public async Task ShouldAddIfNoneMatchHeaderWithTagAndIsWeakFalse()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfNoneMatch(@"""abc""", false), "If-None-Match", @"""abc""");
+
+		[Fact]
+		public async Task ShouldAddIfRangeHeaderWithRangeConditionHeaderValue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfRange(new RangeConditionHeaderValue(@"""abc""")), "If-Range", @"""abc""");
+
+		[Fact]
+		public async Task ShouldAddIfRangeHeaderWithValue()
+		{
+			var value = DateTimeOffset.Now;
+
+			await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfRange(value), "If-Range", value.ToString("r"));
+		}
+
+		[Fact]
+		public async Task ShouldAddIfRangeHeaderWithTag()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfRange(@"""abc"""), "If-Range", @"""abc""");
+
+		[Fact]
+		public async Task ShouldAddIfRangeHeaderWithTagAndIsWeakTrue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfRange(@"""abc""", true), "If-Range", @"W/""abc""");
+
+		[Fact]
+		public async Task ShouldAddIfRangeHeaderWithTagAndIsWeakFalse()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfRange(@"""abc""", false), "If-Range", @"""abc""");
+
 		private static async Task SetHeaderAndVerifyIsSet(Action<Omicron> setter, string name, params string[] expectedValues)
 		{
 			var httpService = Substitute.For<IHttpService>();

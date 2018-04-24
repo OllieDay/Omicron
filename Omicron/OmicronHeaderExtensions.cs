@@ -93,6 +93,30 @@ namespace Omicron
 		public static Omicron IfMatch(this Omicron @this, string tag, bool isWeak)
 			=> @this.IfMatch(new EntityTagHeaderValue(tag, isWeak));
 
+		public static Omicron IfModifiedSince(this Omicron @this, DateTimeOffset value)
+			=> @this.AddModification(request => request.Headers.IfModifiedSince = value);
+
+		public static Omicron IfNoneMatch(this Omicron @this, EntityTagHeaderValue value)
+			=> @this.AddHeaderValue(headers => headers.IfNoneMatch, value);
+
+		public static Omicron IfNoneMatch(this Omicron @this, string tag)
+		=> @this.IfNoneMatch(new EntityTagHeaderValue(tag));
+
+		public static Omicron IfNoneMatch(this Omicron @this, string tag, bool isWeak)
+			=> @this.IfNoneMatch(new EntityTagHeaderValue(tag, isWeak));
+
+		public static Omicron IfRange(this Omicron @this, RangeConditionHeaderValue value)
+			=> @this.AddModification(request => request.Headers.IfRange = value);
+
+		public static Omicron IfRange(this Omicron @this, DateTimeOffset date)
+			=> @this.IfRange(new RangeConditionHeaderValue(date));
+
+		public static Omicron IfRange(this Omicron @this, string tag)
+			=> @this.IfRange(new RangeConditionHeaderValue(new EntityTagHeaderValue(tag)));
+
+		public static Omicron IfRange(this Omicron @this, string tag, bool isWeak)
+			=> @this.IfRange(new RangeConditionHeaderValue(new EntityTagHeaderValue(tag, isWeak)));
+
 		internal static Omicron AddHeaderValue<T>(this Omicron @this, Func<HttpRequestHeaders, ICollection<T>> selector, T value)
 			=> @this.Return(() => @this.AddModification(request => selector(request.Headers).Add(value)));
 	}
