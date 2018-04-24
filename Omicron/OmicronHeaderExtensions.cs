@@ -78,6 +78,21 @@ namespace Omicron
 		public static Omicron ExpectContinue(this Omicron @this, bool value)
 			=> @this.AddModification(request => request.Headers.ExpectContinue = value);
 
+		public static Omicron From(this Omicron @this, string value)
+			=> @this.AddModification(request => request.Headers.From = value);
+
+		public static Omicron Host(this Omicron @this, string value)
+			=> @this.AddModification(request => request.Headers.Host = value);
+
+		public static Omicron IfMatch(this Omicron @this, EntityTagHeaderValue value)
+			=> @this.AddHeaderValue(headers => headers.IfMatch, value);
+
+		public static Omicron IfMatch(this Omicron @this, string tag)
+			=> @this.IfMatch(new EntityTagHeaderValue(tag));
+
+		public static Omicron IfMatch(this Omicron @this, string tag, bool isWeak)
+			=> @this.IfMatch(new EntityTagHeaderValue(tag, isWeak));
+
 		internal static Omicron AddHeaderValue<T>(this Omicron @this, Func<HttpRequestHeaders, ICollection<T>> selector, T value)
 			=> @this.Return(() => @this.AddModification(request => selector(request.Headers).Add(value)));
 	}

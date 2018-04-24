@@ -132,6 +132,30 @@ namespace Omicron.Tests
 		public async Task ShouldNotAddExpectContinueHeaderWithNameAndValue()
 			=> await SetHeaderAndVerifyIsNotSet(omicron => omicron.With.ExpectContinue(false), "Expect");
 
+		[Fact]
+		public async Task ShouldAddFromHeaderWithValue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.From("user@example.com"), "From", "user@example.com");
+
+		[Fact]
+		public async Task ShouldAddHostHeaderWithValue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Host("example.com:80"), "Host", "example.com:80");
+
+		[Fact]
+		public async Task ShouldAddIfMatchHeaderWithEntityTagHeaderValue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfMatch(new EntityTagHeaderValue(@"""abc""")), "If-Match", @"""abc""");
+
+		[Fact]
+		public async Task ShouldAddIfMatchHeaderWithTag()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfMatch(@"""abc"""), "If-Match", @"""abc""");
+
+		[Fact]
+		public async Task ShouldAddIfMatchHeaderWithTagAndIsWeakTrue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfMatch(@"""abc""", true), "If-Match", @"W/""abc""");
+
+		[Fact]
+		public async Task ShouldAddIfMatchHeaderWithTagAndIsWeakFalse()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfMatch(@"""abc""", false), "If-Match", @"""abc""");
+
 		private static async Task SetHeaderAndVerifyIsSet(Action<Omicron> setter, string name, params string[] expectedValues)
 		{
 			var httpService = Substitute.For<IHttpService>();
