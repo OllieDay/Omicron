@@ -236,6 +236,22 @@ namespace Omicron.Tests
 		public async Task ShouldAddProxyAuthorizationHeaderWithSchemeAndParameter()
 			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.ProxyAuthorization("Basic", "..."), "Authorization", "Basic ...");
 
+		[Fact]
+		public async Task ShouldAddRangeHeaderWithRangeHeaderValue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Range(new RangeHeaderValue(0, 1)), "Range", "bytes=0-1");
+
+		[Fact]
+		public async Task ShouldAddRangeHeaderWithFromAndTo()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Range(0, 1), "Range", "bytes=0-1");
+
+		[Fact]
+		public async Task ShouldAddRefererHeaderWithValue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Referrer(new Uri("https://example.com/")), "Referer", "https://example.com/");
+
+		[Fact]
+		public async Task ShouldAddRefererHeaderWithUriString()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Referrer("https://example.com/"), "Referer", "https://example.com/");
+
 		private static async Task SetHeaderAndVerifyIsSet(Action<Omicron> setter, string name, params string[] expectedValues)
 		{
 			var httpService = Substitute.For<IHttpService>();

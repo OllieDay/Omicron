@@ -138,6 +138,18 @@ namespace Omicron
 		public static Omicron ProxyAuthorization(this Omicron @this, string scheme, string parameter)
 			=> @this.ProxyAuthorization(new AuthenticationHeaderValue(scheme, parameter));
 
+		public static Omicron Range(this Omicron @this, RangeHeaderValue value)
+			=> @this.AddModification(request => request.Headers.Range = value);
+
+		public static Omicron Range(this Omicron @this, long from, long to)
+			=> @this.Range(new RangeHeaderValue(from, to));
+
+		public static Omicron Referrer(this Omicron @this, Uri value)
+			=> @this.AddModification(request => request.Headers.Referrer = value);
+
+		public static Omicron Referrer(this Omicron @this, string uriString)
+			=> @this.Referrer(new Uri(uriString));
+
 		internal static Omicron AddHeaderValue<T>(this Omicron @this, Func<HttpRequestHeaders, ICollection<T>> selector, T value)
 			=> @this.Return(() => @this.AddModification(request => selector(request.Headers).Add(value)));
 	}
