@@ -150,6 +150,27 @@ namespace Omicron
 		public static Omicron Referrer(this Omicron @this, string uriString)
 			=> @this.Referrer(new Uri(uriString));
 
+		public static Omicron TE(this Omicron @this, TransferCodingWithQualityHeaderValue value)
+			=> @this.AddHeaderValue(headers => headers.TE, value);
+
+		public static Omicron TE(this Omicron @this, string value)
+			=> @this.TE(new TransferCodingWithQualityHeaderValue(value));
+
+		public static Omicron TE(this Omicron @this, string value, double quality)
+			=> @this.TE(new TransferCodingWithQualityHeaderValue(value, quality));
+
+		public static Omicron Trailer(this Omicron @this, string value)
+			=> @this.AddHeaderValue(headers => headers.Trailer, value);
+
+		public static Omicron TransferEncoding(this Omicron @this, TransferCodingHeaderValue value)
+			=> @this.AddHeaderValue(headers => headers.TransferEncoding, value);
+
+		public static Omicron TransferEncoding(this Omicron @this, string value)
+			=> @this.TransferEncoding(new TransferCodingHeaderValue(value));
+
+		public static Omicron TransferEncodingChunked(this Omicron @this, bool value)
+			=> @this.AddModification(request => request.Headers.TransferEncodingChunked = value);
+
 		internal static Omicron AddHeaderValue<T>(this Omicron @this, Func<HttpRequestHeaders, ICollection<T>> selector, T value)
 			=> @this.Return(() => @this.AddModification(request => selector(request.Headers).Add(value)));
 	}

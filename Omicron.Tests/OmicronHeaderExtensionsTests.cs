@@ -252,6 +252,39 @@ namespace Omicron.Tests
 		public async Task ShouldAddRefererHeaderWithUriString()
 			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Referrer("https://example.com/"), "Referer", "https://example.com/");
 
+
+		[Fact]
+		public async Task ShouldAddTEHeaderWithTransferCodingWithQualityHeaderValue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.TE(new TransferCodingWithQualityHeaderValue("gzip")), "TE", "gzip");
+
+		[Fact]
+		public async Task ShouldAddTEHeaderWithValue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.TE("gzip"), "TE", "gzip");
+
+		[Fact]
+		public async Task ShouldAddTEHeaderWithValueAndQuality()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.TE("gzip", 0), "TE", "gzip; q=0.0");
+
+		[Fact]
+		public async Task ShouldAddTrailerHeaderWithValue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Trailer("Expires"), "Trailer", "Expires");
+
+		[Fact]
+		public async Task ShouldAddTransferEncodingHeaderTransferCodingHeaderValue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.TransferEncoding("gzip"), "Transfer-Encoding", "gzip");
+
+		[Fact]
+		public async Task ShouldAddTransferEncodingHeaderWithValue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.TransferEncoding("gzip"), "Transfer-Encoding", "gzip");
+
+		[Fact]
+		public async Task ShouldAddTransferEncodingHeaderWithValueTrue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.TransferEncodingChunked(true), "Transfer-Encoding", "chunked");
+
+		[Fact]
+		public async Task ShouldNotAddTransferEncodingHeaderWithValueFalse()
+			=> await SetHeaderAndVerifyIsNotSet(omicron => omicron.With.TransferEncodingChunked(false), "Transfer-Encoding-Chunked");
+
 		private static async Task SetHeaderAndVerifyIsSet(Action<Omicron> setter, string name, params string[] expectedValues)
 		{
 			var httpService = Substitute.For<IHttpService>();
