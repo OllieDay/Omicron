@@ -13,71 +13,71 @@ namespace Omicron.Tests
 	{
 		[Fact]
 		public async Task ShouldAddHeaderWithValues()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Header("X-Omicron", "Omicron 1", "Omicron 2"), "X-Omicron", "Omicron 1", "Omicron 2");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Header("X-Omicron", "Omicron 1", "Omicron 2"), "X-Omicron", "Omicron 1", "Omicron 2");
 
 		[Fact]
 		public async Task ShouldAddHeaderWithValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Header("X-Omicron", "Omicron"), "X-Omicron", "Omicron");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Header("X-Omicron", "Omicron"), "X-Omicron", "Omicron");
 
 		[Fact]
 		public async Task ShouldAddAcceptHeaderWithMediaTypeWithQualityHeaderValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Accept(new MediaTypeWithQualityHeaderValue("text/plain")), "Accept", "text/plain");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Accept(new MediaTypeWithQualityHeaderValue("text/plain")), "Accept", "text/plain");
 
 		[Fact]
 		public async Task ShouldAddAcceptHeaderWithMediaType()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Accept("text/plain"), "Accept", "text/plain");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Accept("text/plain"), "Accept", "text/plain");
 
 		[Fact]
 		public async Task ShouldAddAcceptHeaderWithMediaTypeAndQuality()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Accept("text/plain", 0), "Accept", "text/plain; q=0.0");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Accept("text/plain", 0), "Accept", "text/plain; q=0.0");
 
 		[Fact]
 		public async Task ShouldAddAcceptCharsetHeaderWithStringWithQualityHeaderValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.AcceptCharset(new StringWithQualityHeaderValue("utf-8")), "Accept-Charset", "utf-8");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.AcceptCharset(new StringWithQualityHeaderValue("utf-8")), "Accept-Charset", "utf-8");
 
 		[Fact]
 		public async Task ShouldAddAcceptCharsetHeaderWithValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.AcceptCharset("utf-8"), "Accept-Charset", "utf-8");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.AcceptCharset("utf-8"), "Accept-Charset", "utf-8");
 
 		[Fact]
 		public async Task ShouldAddAcceptCharsetHeaderWithValueAndQuality()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.AcceptCharset("utf-8", 0), "Accept-Charset", "utf-8; q=0.0");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.AcceptCharset("utf-8", 0), "Accept-Charset", "utf-8; q=0.0");
 
 		[Fact]
 		public async Task ShouldAddAcceptEncodingHeaderWithStringWithQualityHeaderValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.AcceptEncoding(new StringWithQualityHeaderValue("gzip")), "Accept-Encoding", "gzip");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.AcceptEncoding(new StringWithQualityHeaderValue("gzip")), "Accept-Encoding", "gzip");
 
 		[Fact]
 		public async Task ShouldAddAcceptEncodingHeaderWithValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.AcceptEncoding("gzip"), "Accept-Encoding", "gzip");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.AcceptEncoding("gzip"), "Accept-Encoding", "gzip");
 
 		[Fact]
 		public async Task ShouldAddAcceptEncodingHeaderWithValueAndQuality()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.AcceptEncoding("gzip", 0), "Accept-Encoding", "gzip; q=0.0");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.AcceptEncoding("gzip", 0), "Accept-Encoding", "gzip; q=0.0");
 
 		[Fact]
 		public async Task ShouldAddAcceptLanguageHeaderWithStringWithQualityHeaderValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.AcceptLanguage(new StringWithQualityHeaderValue("en")), "Accept-Language", "en");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.AcceptLanguage(new StringWithQualityHeaderValue("en")), "Accept-Language", "en");
 
 		[Fact]
 		public async Task ShouldAddAcceptLanguageHeaderWithValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.AcceptLanguage("en"), "Accept-Language", "en");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.AcceptLanguage("en"), "Accept-Language", "en");
 
 		[Fact]
 		public async Task ShouldAddAcceptLanguageHeaderWithValueAndQuality()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.AcceptLanguage("en", 0), "Accept-Language", "en; q=0.0");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.AcceptLanguage("en", 0), "Accept-Language", "en; q=0.0");
 
 		[Fact]
 		public async Task ShouldAddAuthorizationHeaderWithAuthenticationHeaderValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Authorization(new AuthenticationHeaderValue("...")), "Authorization", "...");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Authorization(new AuthenticationHeaderValue("...")), "Authorization", "...");
 
 		[Fact]
 		public async Task ShouldAddAuthorizationHeaderWithScheme()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Authorization("..."), "Authorization", "...");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Authorization("..."), "Authorization", "...");
 
 		[Fact]
 		public async Task ShouldAddAuthorizationHeaderWithSchemeAndParameter()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Authorization("Basic", "..."), "Authorization", "Basic ...");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Authorization("Basic", "..."), "Authorization", "Basic ...");
 
 		[Fact]
 		public async Task ShouldAddCacheControlHeaderWithCacheControlHeaderValue()
@@ -89,287 +89,285 @@ namespace Omicron.Tests
 				MaxStale = true
 			};
 
-			await SetHeaderAndVerifyIsSet(omicron => omicron.With.CacheControl(value), "Cache-Control", "no-cache, max-age=1, max-stale");
+			await SetHeaderAndVerifyIsSet(request => request.With.CacheControl(value), "Cache-Control", "no-cache, max-age=1, max-stale");
 		}
 
 		[Fact]
 		public async Task ShouldAddConnectionHeaderWithValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Connection("keep-alive"), "Connection", "keep-alive");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Connection("keep-alive"), "Connection", "keep-alive");
 
 		[Fact]
 		public async Task ShouldAddConnectionHeaderWithValueTrue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.ConnectionClose(true), "Connection", "close");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.ConnectionClose(true), "Connection", "close");
 
 		[Fact]
 		public async Task ShouldNotAddConnectionHeaderWithValueFalse()
-			=> await SetHeaderAndVerifyIsNotSet(omicron => omicron.With.ConnectionClose(false), "Connection");
+			=> await SetHeaderAndVerifyIsNotSet(request => request.With.ConnectionClose(false), "Connection");
 
 		[Fact]
 		public async Task ShouldAddDateHeaderWithValue()
 		{
 			var value = DateTimeOffset.Now;
 
-			await SetHeaderAndVerifyIsSet(omicron => omicron.With.Date(value), "Date", value.ToString("r"));
+			await SetHeaderAndVerifyIsSet(request => request.With.Date(value), "Date", value.ToString("r"));
 		}
 
 		[Fact]
 		public async Task ShouldAddExpectHeaderWithNameValueWithParametersHeaderValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Expect(new NameValueWithParametersHeaderValue("name", "value")), "Expect", "name=value");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Expect(new NameValueWithParametersHeaderValue("name", "value")), "Expect", "name=value");
 
 		[Fact]
 		public async Task ShouldAddExpectHeaderWithName()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Expect("..."), "Expect", "...");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Expect("..."), "Expect", "...");
 
 		[Fact]
 		public async Task ShouldAddExpectHeaderWithNameAndValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Expect("name", "value"), "Expect", "name=value");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Expect("name", "value"), "Expect", "name=value");
 
 		[Fact]
 		public async Task ShouldAddExpectHeaderWithValueTrue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.ExpectContinue(true), "Expect", "100-continue");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.ExpectContinue(true), "Expect", "100-continue");
 
 		[Fact]
 		public async Task ShouldNotAddExpectContinueHeaderWithValueFalse()
-			=> await SetHeaderAndVerifyIsNotSet(omicron => omicron.With.ExpectContinue(false), "Expect");
+			=> await SetHeaderAndVerifyIsNotSet(request => request.With.ExpectContinue(false), "Expect");
 
 		[Fact]
 		public async Task ShouldAddFromHeaderWithValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.From("user@example.com"), "From", "user@example.com");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.From("user@example.com"), "From", "user@example.com");
 
 		[Fact]
 		public async Task ShouldAddHostHeaderWithValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Host("example.com:80"), "Host", "example.com:80");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Host("example.com:80"), "Host", "example.com:80");
 
 		[Fact]
 		public async Task ShouldAddIfMatchHeaderWithEntityTagHeaderValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfMatch(new EntityTagHeaderValue(@"""...""")), "If-Match", @"""...""");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.IfMatch(new EntityTagHeaderValue(@"""...""")), "If-Match", @"""...""");
 
 		[Fact]
 		public async Task ShouldAddIfMatchHeaderWithTag()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfMatch(@"""..."""), "If-Match", @"""...""");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.IfMatch(@"""..."""), "If-Match", @"""...""");
 
 		[Fact]
 		public async Task ShouldAddIfMatchHeaderWithTagAndIsWeakTrue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfMatch(@"""...""", true), "If-Match", @"W/""...""");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.IfMatch(@"""...""", true), "If-Match", @"W/""...""");
 
 		[Fact]
 		public async Task ShouldAddIfMatchHeaderWithTagAndIsWeakFalse()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfMatch(@"""...""", false), "If-Match", @"""...""");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.IfMatch(@"""...""", false), "If-Match", @"""...""");
 
 		[Fact]
 		public async Task ShouldAddIfModifiedSinceHeaderWithValue()
 		{
 			var value = DateTimeOffset.Now;
 
-			await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfModifiedSince(value), "If-Modified-Since", value.ToString("r"));
+			await SetHeaderAndVerifyIsSet(request => request.With.IfModifiedSince(value), "If-Modified-Since", value.ToString("r"));
 		}
 
 		[Fact]
 		public async Task ShouldAddIfNoneMatchHeaderWithEntityTagHeaderValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfNoneMatch(new EntityTagHeaderValue(@"""...""")), "If-None-Match", @"""...""");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.IfNoneMatch(new EntityTagHeaderValue(@"""...""")), "If-None-Match", @"""...""");
 
 		[Fact]
 		public async Task ShouldAddIfNoneMatchHeaderWithTag()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfNoneMatch(@"""..."""), "If-None-Match", @"""...""");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.IfNoneMatch(@"""..."""), "If-None-Match", @"""...""");
 
 		[Fact]
 		public async Task ShouldAddIfNoneMatchHeaderWithTagAndIsWeakTrue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfNoneMatch(@"""...""", true), "If-None-Match", @"W/""...""");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.IfNoneMatch(@"""...""", true), "If-None-Match", @"W/""...""");
 
 		[Fact]
 		public async Task ShouldAddIfNoneMatchHeaderWithTagAndIsWeakFalse()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfNoneMatch(@"""...""", false), "If-None-Match", @"""...""");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.IfNoneMatch(@"""...""", false), "If-None-Match", @"""...""");
 
 		[Fact]
 		public async Task ShouldAddIfRangeHeaderWithRangeConditionHeaderValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfRange(new RangeConditionHeaderValue(@"""...""")), "If-Range", @"""...""");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.IfRange(new RangeConditionHeaderValue(@"""...""")), "If-Range", @"""...""");
 
 		[Fact]
 		public async Task ShouldAddIfRangeHeaderWithValue()
 		{
 			var value = DateTimeOffset.Now;
 
-			await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfRange(value), "If-Range", value.ToString("r"));
+			await SetHeaderAndVerifyIsSet(request => request.With.IfRange(value), "If-Range", value.ToString("r"));
 		}
 
 		[Fact]
 		public async Task ShouldAddIfRangeHeaderWithTag()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfRange(@"""..."""), "If-Range", @"""...""");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.IfRange(@"""..."""), "If-Range", @"""...""");
 
 		[Fact]
 		public async Task ShouldAddIfRangeHeaderWithTagAndIsWeakTrue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfRange(@"""...""", true), "If-Range", @"W/""...""");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.IfRange(@"""...""", true), "If-Range", @"W/""...""");
 
 		[Fact]
 		public async Task ShouldAddIfRangeHeaderWithTagAndIsWeakFalse()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfRange(@"""...""", false), "If-Range", @"""...""");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.IfRange(@"""...""", false), "If-Range", @"""...""");
 
 		[Fact]
 		public async Task ShouldAddIfUnmodifiedSinceHeaderWithValue()
 		{
 			var value = DateTimeOffset.Now;
 
-			await SetHeaderAndVerifyIsSet(omicron => omicron.With.IfUnmodifiedSince(value), "If-Unmodified-Since", value.ToString("r"));
+			await SetHeaderAndVerifyIsSet(request => request.With.IfUnmodifiedSince(value), "If-Unmodified-Since", value.ToString("r"));
 		}
 
 		[Fact]
 		public async Task ShouldAddMaxForwardsHeaderWithValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.MaxForwards(0), "Max-Forwards", "0");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.MaxForwards(0), "Max-Forwards", "0");
 
 		[Fact]
 		public async Task ShouldAddPragmaHeaderWithNameValueHeaderValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Pragma(new NameValueHeaderValue("no-cache")), "Pragma", "no-cache");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Pragma(new NameValueHeaderValue("no-cache")), "Pragma", "no-cache");
 
 		[Fact]
 		public async Task ShouldAddPragmaHeaderWithName()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Pragma("no-cache"), "Pragma", "no-cache");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Pragma("no-cache"), "Pragma", "no-cache");
 
 		[Fact]
 		public async Task ShouldAddProxyAuthorizationHeaderWithAuthenticationHeaderValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.ProxyAuthorization(new AuthenticationHeaderValue("...")), "Authorization", "...");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.ProxyAuthorization(new AuthenticationHeaderValue("...")), "Authorization", "...");
 
 		[Fact]
 		public async Task ShouldAddProxyAuthorizationHeaderWithScheme()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.ProxyAuthorization("..."), "Authorization", "...");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.ProxyAuthorization("..."), "Authorization", "...");
 
 		[Fact]
 		public async Task ShouldAddProxyAuthorizationHeaderWithSchemeAndParameter()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.ProxyAuthorization("Basic", "..."), "Authorization", "Basic ...");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.ProxyAuthorization("Basic", "..."), "Authorization", "Basic ...");
 
 		[Fact]
 		public async Task ShouldAddRangeHeaderWithRangeHeaderValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Range(new RangeHeaderValue(0, 1)), "Range", "bytes=0-1");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Range(new RangeHeaderValue(0, 1)), "Range", "bytes=0-1");
 
 		[Fact]
 		public async Task ShouldAddRangeHeaderWithFromAndTo()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Range(0, 1), "Range", "bytes=0-1");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Range(0, 1), "Range", "bytes=0-1");
 
 		[Fact]
 		public async Task ShouldAddRefererHeaderWithValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Referrer(new Uri("https://example.com/")), "Referer", "https://example.com/");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Referrer(new Uri("https://example.com/")), "Referer", "https://example.com/");
 
 		[Fact]
 		public async Task ShouldAddRefererHeaderWithUriString()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Referrer("https://example.com/"), "Referer", "https://example.com/");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Referrer("https://example.com/"), "Referer", "https://example.com/");
 
 
 		[Fact]
 		public async Task ShouldAddTEHeaderWithTransferCodingWithQualityHeaderValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.TE(new TransferCodingWithQualityHeaderValue("gzip")), "TE", "gzip");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.TE(new TransferCodingWithQualityHeaderValue("gzip")), "TE", "gzip");
 
 		[Fact]
 		public async Task ShouldAddTEHeaderWithValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.TE("gzip"), "TE", "gzip");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.TE("gzip"), "TE", "gzip");
 
 		[Fact]
 		public async Task ShouldAddTEHeaderWithValueAndQuality()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.TE("gzip", 0), "TE", "gzip; q=0.0");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.TE("gzip", 0), "TE", "gzip; q=0.0");
 
 		[Fact]
 		public async Task ShouldAddTrailerHeaderWithValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Trailer("Expires"), "Trailer", "Expires");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Trailer("Expires"), "Trailer", "Expires");
 
 		[Fact]
 		public async Task ShouldAddTransferEncodingHeaderTransferCodingHeaderValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.TransferEncoding("gzip"), "Transfer-Encoding", "gzip");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.TransferEncoding("gzip"), "Transfer-Encoding", "gzip");
 
 		[Fact]
 		public async Task ShouldAddTransferEncodingHeaderWithValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.TransferEncoding("gzip"), "Transfer-Encoding", "gzip");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.TransferEncoding("gzip"), "Transfer-Encoding", "gzip");
 
 		[Fact]
 		public async Task ShouldAddTransferEncodingHeaderWithValueTrue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.TransferEncodingChunked(true), "Transfer-Encoding", "chunked");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.TransferEncodingChunked(true), "Transfer-Encoding", "chunked");
 
 		[Fact]
 		public async Task ShouldNotAddTransferEncodingHeaderWithValueFalse()
-			=> await SetHeaderAndVerifyIsNotSet(omicron => omicron.With.TransferEncodingChunked(false), "Transfer-Encoding-Chunked");
+			=> await SetHeaderAndVerifyIsNotSet(request => request.With.TransferEncodingChunked(false), "Transfer-Encoding-Chunked");
 
 		[Fact]
 		public async Task ShouldAddUpgradeHeaderWithProductHeaderValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Upgrade(new ProductHeaderValue("h2c")), "Upgrade", "h2c");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Upgrade(new ProductHeaderValue("h2c")), "Upgrade", "h2c");
 
 		[Fact]
 		public async Task ShouldAddUpgradeHeaderWithName()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Upgrade("h2c"), "Upgrade", "h2c");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Upgrade("h2c"), "Upgrade", "h2c");
 
 		[Fact]
 		public async Task ShouldAddUpgradeHeaderWithNameAndVersion()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Upgrade("HTTP", "2"), "Upgrade", "HTTP/2");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Upgrade("HTTP", "2"), "Upgrade", "HTTP/2");
 
 		[Fact]
 		public async Task ShouldAddUserAgentHeaderWithProductInfoHeaderValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.UserAgent(new ProductInfoHeaderValue("Mozilla", "1.0")), "User-Agent", "Mozilla/1.0");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.UserAgent(new ProductInfoHeaderValue("Mozilla", "1.0")), "User-Agent", "Mozilla/1.0");
 
 		[Fact]
 		public async Task ShouldAddUserAgentHeaderWithProductHeaderValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.UserAgent(new ProductHeaderValue("Mozilla", "1.0")), "User-Agent", "Mozilla/1.0");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.UserAgent(new ProductHeaderValue("Mozilla", "1.0")), "User-Agent", "Mozilla/1.0");
 
 		[Fact]
 		public async Task ShouldAddUserAgentHeaderWithComment()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.UserAgent("(...)"), "User-Agent", "(...)");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.UserAgent("(...)"), "User-Agent", "(...)");
 
 		[Fact]
 		public async Task ShouldAddUserAgentHeaderWithProductNameAndProductVersion()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.UserAgent("Mozilla", "1.0"), "User-Agent", "Mozilla/1.0");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.UserAgent("Mozilla", "1.0"), "User-Agent", "Mozilla/1.0");
 
 		[Fact]
 		public async Task ShouldAddViaHeaderWithViaHeaderValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Via(new ViaHeaderValue("1.0", "received-by")), "Via", "1.0 received-by");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Via(new ViaHeaderValue("1.0", "received-by")), "Via", "1.0 received-by");
 
 		[Fact]
 		public async Task ShouldAddViaHeaderWithProtocolVersionAndReceivedBy()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Via("1.0", "received-by"), "Via", "1.0 received-by");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Via("1.0", "received-by"), "Via", "1.0 received-by");
 
 		[Fact]
 		public async Task ShouldAddViaHeaderWithProtocolVersionAndReceivedByAndProtocolName()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Via("1.0", "received-by", "HTTP"), "Via", "HTTP/1.0 received-by");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Via("1.0", "received-by", "HTTP"), "Via", "HTTP/1.0 received-by");
 
 		[Fact]
 		public async Task ShouldAddViaHeaderWithProtocolVersionAndReceivedByAndProtocolNameAndComment()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Via("1.0", "received-by", "HTTP", "(comment)"), "Via", "HTTP/1.0 received-by (comment)");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Via("1.0", "received-by", "HTTP", "(comment)"), "Via", "HTTP/1.0 received-by (comment)");
 
 		[Fact]
 		public async Task ShouldAddWarningHeaderWithWarningHeaderValue()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Warning(new WarningHeaderValue(110, "agent", @"""Response is stale""")), "Warning", @"110 agent ""Response is stale""");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Warning(new WarningHeaderValue(110, "agent", @"""Response is stale""")), "Warning", @"110 agent ""Response is stale""");
 
 		[Fact]
 		public async Task ShouldAddWarningHeaderWithCodeAndAgentAndText()
-			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Warning(110, "agent", @"""Response is stale"""), "Warning", @"110 agent ""Response is stale""");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.Warning(110, "agent", @"""Response is stale"""), "Warning", @"110 agent ""Response is stale""");
 
 		[Fact]
 		public async Task ShouldAddWarningHeaderWithCodeAndAgentAndTextAndDate()
 		{
 			var date = DateTimeOffset.Now;
 
-			await SetHeaderAndVerifyIsSet(omicron => omicron.With.Warning(110, "agent", @"""Response is stale""", date), "Warning", $@"110 agent ""Response is stale"" ""{date.ToString("r")}""");
+			await SetHeaderAndVerifyIsSet(request => request.With.Warning(110, "agent", @"""Response is stale""", date), "Warning", $@"110 agent ""Response is stale"" ""{date.ToString("r")}""");
 		}
 
-		private static async Task SetHeaderAndVerifyIsSet(Action<Omicron> setter, string name, params string[] expectedValues)
+		private static async Task SetHeaderAndVerifyIsSet(Action<IRequest> setter, string name, params string[] expectedValues)
 		{
 			var httpService = Substitute.For<IHttpService>();
-			var omicron = new Omicron(httpService, HttpMethod.Head, string.Empty);
+			var request = new Request(httpService, HttpMethod.Head, string.Empty);
 
-			setter(omicron);
+			setter(request);
+			request.Assert(Stubs.Noop);
 
-			await omicron.Run();
-
-			await httpService.Received().SendAsync(Arg.Is<HttpRequestMessage>(request =>
-				IsHeaderSet(request.Headers, name, expectedValues)
+			await httpService.Received().SendAsync(Arg.Is<HttpRequestMessage>(httpRequestMessage =>
+				IsHeaderSet(httpRequestMessage.Headers, name, expectedValues)
 			));
 		}
 
-		private static async Task SetHeaderAndVerifyIsNotSet(Action<Omicron> setter, string name)
+		private static async Task SetHeaderAndVerifyIsNotSet(Action<IRequest> setter, string name)
 		{
 			var httpService = Substitute.For<IHttpService>();
-			var omicron = new Omicron(httpService, HttpMethod.Head, string.Empty);
+			var request = new Request(httpService, HttpMethod.Head, string.Empty);
 
-			setter(omicron);
+			setter(request);
+			request.Assert(Stubs.Noop);
 
-			await omicron.Run();
-
-			await httpService.Received().SendAsync(Arg.Is<HttpRequestMessage>(request =>
-				!IsHeaderSet(request.Headers, name)
+			await httpService.Received().SendAsync(Arg.Is<HttpRequestMessage>(httpRequestMessage =>
+				!IsHeaderSet(httpRequestMessage.Headers, name)
 			));
 		}
 

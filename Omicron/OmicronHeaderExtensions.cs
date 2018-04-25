@@ -6,214 +6,214 @@ namespace Omicron
 {
 	public static class OmicronHeaderExtensions
 	{
-		public static Omicron Header(this Omicron @this, string name, params string[] values)
-			=> @this.AddModification(request => request.Headers.Add(name, values));
+		public static IRequest Header(this IRequest @this, string name, params string[] values)
+			=> @this.Modify(request => request.Headers.Add(name, values));
 
-		public static Omicron Accept(this Omicron @this, MediaTypeWithQualityHeaderValue value)
+		public static IRequest Accept(this IRequest @this, MediaTypeWithQualityHeaderValue value)
 			=> @this.AddHeaderValue(headers => headers.Accept, value);
 
-		public static Omicron Accept(this Omicron @this, string mediaType)
+		public static IRequest Accept(this IRequest @this, string mediaType)
 			=> @this.Accept(new MediaTypeWithQualityHeaderValue(mediaType));
 
-		public static Omicron Accept(this Omicron @this, string mediaType, double quality)
+		public static IRequest Accept(this IRequest @this, string mediaType, double quality)
 			=> @this.Accept(new MediaTypeWithQualityHeaderValue(mediaType, quality));
 
-		public static Omicron AcceptCharset(this Omicron @this, StringWithQualityHeaderValue value)
+		public static IRequest AcceptCharset(this IRequest @this, StringWithQualityHeaderValue value)
 			=> @this.AddHeaderValue(headers => headers.AcceptCharset, value);
 
-		public static Omicron AcceptCharset(this Omicron @this, string value)
+		public static IRequest AcceptCharset(this IRequest @this, string value)
 			=> @this.AcceptCharset(new StringWithQualityHeaderValue(value));
 
-		public static Omicron AcceptCharset(this Omicron @this, string value, double quality)
+		public static IRequest AcceptCharset(this IRequest @this, string value, double quality)
 			=> @this.AcceptCharset(new StringWithQualityHeaderValue(value, quality));
 
-		public static Omicron AcceptEncoding(this Omicron @this, StringWithQualityHeaderValue value)
+		public static IRequest AcceptEncoding(this IRequest @this, StringWithQualityHeaderValue value)
 			=> @this.AddHeaderValue(headers => headers.AcceptEncoding, value);
 
-		public static Omicron AcceptEncoding(this Omicron @this, string value)
+		public static IRequest AcceptEncoding(this IRequest @this, string value)
 			=> @this.AcceptEncoding(new StringWithQualityHeaderValue(value));
 
-		public static Omicron AcceptEncoding(this Omicron @this, string value, double quality)
+		public static IRequest AcceptEncoding(this IRequest @this, string value, double quality)
 			=> @this.AcceptEncoding(new StringWithQualityHeaderValue(value, quality));
 
-		public static Omicron AcceptLanguage(this Omicron @this, StringWithQualityHeaderValue value)
+		public static IRequest AcceptLanguage(this IRequest @this, StringWithQualityHeaderValue value)
 			=> @this.AddHeaderValue(headers => headers.AcceptLanguage, value);
 
-		public static Omicron AcceptLanguage(this Omicron @this, string value)
+		public static IRequest AcceptLanguage(this IRequest @this, string value)
 			=> @this.AcceptLanguage(new StringWithQualityHeaderValue(value));
 
-		public static Omicron AcceptLanguage(this Omicron @this, string value, double quality)
+		public static IRequest AcceptLanguage(this IRequest @this, string value, double quality)
 			=> @this.AcceptLanguage(new StringWithQualityHeaderValue(value, quality));
 
-		public static Omicron Authorization(this Omicron @this, AuthenticationHeaderValue value)
-			=> @this.AddModification(request => request.Headers.Authorization = value);
+		public static IRequest Authorization(this IRequest @this, AuthenticationHeaderValue value)
+			=> @this.Modify(request => request.Headers.Authorization = value);
 
-		public static Omicron Authorization(this Omicron @this, string scheme)
+		public static IRequest Authorization(this IRequest @this, string scheme)
 			=> @this.Authorization(new AuthenticationHeaderValue(scheme));
 
-		public static Omicron Authorization(this Omicron @this, string scheme, string parameter)
+		public static IRequest Authorization(this IRequest @this, string scheme, string parameter)
 			=> @this.Authorization(new AuthenticationHeaderValue(scheme, parameter));
 
-		public static Omicron CacheControl(this Omicron @this, CacheControlHeaderValue value)
-			=> @this.AddModification(request => request.Headers.CacheControl = value);
+		public static IRequest CacheControl(this IRequest @this, CacheControlHeaderValue value)
+			=> @this.Modify(request => request.Headers.CacheControl = value);
 
-		public static Omicron Connection(this Omicron @this, string value)
+		public static IRequest Connection(this IRequest @this, string value)
 			=> @this.AddHeaderValue(headers => headers.Connection, value);
 
-		public static Omicron ConnectionClose(this Omicron @this, bool value)
-			=> @this.AddModification(request => request.Headers.ConnectionClose = value);
+		public static IRequest ConnectionClose(this IRequest @this, bool value)
+			=> @this.Modify(request => request.Headers.ConnectionClose = value);
 
-		public static Omicron Date(this Omicron @this, DateTimeOffset value)
-			=> @this.AddModification(request => request.Headers.Date = value);
+		public static IRequest Date(this IRequest @this, DateTimeOffset value)
+			=> @this.Modify(request => request.Headers.Date = value);
 
-		public static Omicron Expect(this Omicron @this, NameValueWithParametersHeaderValue value)
+		public static IRequest Expect(this IRequest @this, NameValueWithParametersHeaderValue value)
 			=> @this.AddHeaderValue(headers => headers.Expect, value);
 
-		public static Omicron Expect(this Omicron @this, string name)
+		public static IRequest Expect(this IRequest @this, string name)
 			=> @this.Expect(new NameValueWithParametersHeaderValue(name));
 
-		public static Omicron Expect(this Omicron @this, string name, string value)
+		public static IRequest Expect(this IRequest @this, string name, string value)
 			=> @this.Expect(new NameValueWithParametersHeaderValue(name, value));
 
-		public static Omicron ExpectContinue(this Omicron @this, bool value)
-			=> @this.AddModification(request => request.Headers.ExpectContinue = value);
+		public static IRequest ExpectContinue(this IRequest @this, bool value)
+			=> @this.Modify(request => request.Headers.ExpectContinue = value);
 
-		public static Omicron From(this Omicron @this, string value)
-			=> @this.AddModification(request => request.Headers.From = value);
+		public static IRequest From(this IRequest @this, string value)
+			=> @this.Modify(request => request.Headers.From = value);
 
-		public static Omicron Host(this Omicron @this, string value)
-			=> @this.AddModification(request => request.Headers.Host = value);
+		public static IRequest Host(this IRequest @this, string value)
+			=> @this.Modify(request => request.Headers.Host = value);
 
-		public static Omicron IfMatch(this Omicron @this, EntityTagHeaderValue value)
+		public static IRequest IfMatch(this IRequest @this, EntityTagHeaderValue value)
 			=> @this.AddHeaderValue(headers => headers.IfMatch, value);
 
-		public static Omicron IfMatch(this Omicron @this, string tag)
+		public static IRequest IfMatch(this IRequest @this, string tag)
 			=> @this.IfMatch(new EntityTagHeaderValue(tag));
 
-		public static Omicron IfMatch(this Omicron @this, string tag, bool isWeak)
+		public static IRequest IfMatch(this IRequest @this, string tag, bool isWeak)
 			=> @this.IfMatch(new EntityTagHeaderValue(tag, isWeak));
 
-		public static Omicron IfModifiedSince(this Omicron @this, DateTimeOffset value)
-			=> @this.AddModification(request => request.Headers.IfModifiedSince = value);
+		public static IRequest IfModifiedSince(this IRequest @this, DateTimeOffset value)
+			=> @this.Modify(request => request.Headers.IfModifiedSince = value);
 
-		public static Omicron IfNoneMatch(this Omicron @this, EntityTagHeaderValue value)
+		public static IRequest IfNoneMatch(this IRequest @this, EntityTagHeaderValue value)
 			=> @this.AddHeaderValue(headers => headers.IfNoneMatch, value);
 
-		public static Omicron IfNoneMatch(this Omicron @this, string tag)
+		public static IRequest IfNoneMatch(this IRequest @this, string tag)
 		=> @this.IfNoneMatch(new EntityTagHeaderValue(tag));
 
-		public static Omicron IfNoneMatch(this Omicron @this, string tag, bool isWeak)
+		public static IRequest IfNoneMatch(this IRequest @this, string tag, bool isWeak)
 			=> @this.IfNoneMatch(new EntityTagHeaderValue(tag, isWeak));
 
-		public static Omicron IfRange(this Omicron @this, RangeConditionHeaderValue value)
-			=> @this.AddModification(request => request.Headers.IfRange = value);
+		public static IRequest IfRange(this IRequest @this, RangeConditionHeaderValue value)
+			=> @this.Modify(request => request.Headers.IfRange = value);
 
-		public static Omicron IfRange(this Omicron @this, DateTimeOffset date)
+		public static IRequest IfRange(this IRequest @this, DateTimeOffset date)
 			=> @this.IfRange(new RangeConditionHeaderValue(date));
 
-		public static Omicron IfRange(this Omicron @this, string tag)
+		public static IRequest IfRange(this IRequest @this, string tag)
 			=> @this.IfRange(new RangeConditionHeaderValue(new EntityTagHeaderValue(tag)));
 
-		public static Omicron IfRange(this Omicron @this, string tag, bool isWeak)
+		public static IRequest IfRange(this IRequest @this, string tag, bool isWeak)
 			=> @this.IfRange(new RangeConditionHeaderValue(new EntityTagHeaderValue(tag, isWeak)));
 
-		public static Omicron IfUnmodifiedSince(this Omicron @this, DateTimeOffset value)
-			=> @this.AddModification(request => request.Headers.IfUnmodifiedSince = value);
+		public static IRequest IfUnmodifiedSince(this IRequest @this, DateTimeOffset value)
+			=> @this.Modify(request => request.Headers.IfUnmodifiedSince = value);
 
-		public static Omicron MaxForwards(this Omicron @this, int value)
-			=> @this.AddModification(request => request.Headers.MaxForwards = value);
+		public static IRequest MaxForwards(this IRequest @this, int value)
+			=> @this.Modify(request => request.Headers.MaxForwards = value);
 
-		public static Omicron Pragma(this Omicron @this, NameValueHeaderValue value)
+		public static IRequest Pragma(this IRequest @this, NameValueHeaderValue value)
 			=> @this.AddHeaderValue(headers => headers.Pragma, value);
 
-		public static Omicron Pragma(this Omicron @this, string name)
+		public static IRequest Pragma(this IRequest @this, string name)
 			=> @this.Pragma(new NameValueHeaderValue(name));
 
-		public static Omicron ProxyAuthorization(this Omicron @this, AuthenticationHeaderValue value)
-			=> @this.AddModification(request => request.Headers.Authorization = value);
+		public static IRequest ProxyAuthorization(this IRequest @this, AuthenticationHeaderValue value)
+			=> @this.Modify(request => request.Headers.Authorization = value);
 
-		public static Omicron ProxyAuthorization(this Omicron @this, string scheme)
+		public static IRequest ProxyAuthorization(this IRequest @this, string scheme)
 			=> @this.ProxyAuthorization(new AuthenticationHeaderValue(scheme));
 
-		public static Omicron ProxyAuthorization(this Omicron @this, string scheme, string parameter)
+		public static IRequest ProxyAuthorization(this IRequest @this, string scheme, string parameter)
 			=> @this.ProxyAuthorization(new AuthenticationHeaderValue(scheme, parameter));
 
-		public static Omicron Range(this Omicron @this, RangeHeaderValue value)
-			=> @this.AddModification(request => request.Headers.Range = value);
+		public static IRequest Range(this IRequest @this, RangeHeaderValue value)
+			=> @this.Modify(request => request.Headers.Range = value);
 
-		public static Omicron Range(this Omicron @this, long from, long to)
+		public static IRequest Range(this IRequest @this, long from, long to)
 			=> @this.Range(new RangeHeaderValue(from, to));
 
-		public static Omicron Referrer(this Omicron @this, Uri value)
-			=> @this.AddModification(request => request.Headers.Referrer = value);
+		public static IRequest Referrer(this IRequest @this, Uri value)
+			=> @this.Modify(request => request.Headers.Referrer = value);
 
-		public static Omicron Referrer(this Omicron @this, string uriString)
+		public static IRequest Referrer(this IRequest @this, string uriString)
 			=> @this.Referrer(new Uri(uriString));
 
-		public static Omicron TE(this Omicron @this, TransferCodingWithQualityHeaderValue value)
+		public static IRequest TE(this IRequest @this, TransferCodingWithQualityHeaderValue value)
 			=> @this.AddHeaderValue(headers => headers.TE, value);
 
-		public static Omicron TE(this Omicron @this, string value)
+		public static IRequest TE(this IRequest @this, string value)
 			=> @this.TE(new TransferCodingWithQualityHeaderValue(value));
 
-		public static Omicron TE(this Omicron @this, string value, double quality)
+		public static IRequest TE(this IRequest @this, string value, double quality)
 			=> @this.TE(new TransferCodingWithQualityHeaderValue(value, quality));
 
-		public static Omicron Trailer(this Omicron @this, string value)
+		public static IRequest Trailer(this IRequest @this, string value)
 			=> @this.AddHeaderValue(headers => headers.Trailer, value);
 
-		public static Omicron TransferEncoding(this Omicron @this, TransferCodingHeaderValue value)
+		public static IRequest TransferEncoding(this IRequest @this, TransferCodingHeaderValue value)
 			=> @this.AddHeaderValue(headers => headers.TransferEncoding, value);
 
-		public static Omicron TransferEncoding(this Omicron @this, string value)
+		public static IRequest TransferEncoding(this IRequest @this, string value)
 			=> @this.TransferEncoding(new TransferCodingHeaderValue(value));
 
-		public static Omicron TransferEncodingChunked(this Omicron @this, bool value)
-			=> @this.AddModification(request => request.Headers.TransferEncodingChunked = value);
+		public static IRequest TransferEncodingChunked(this IRequest @this, bool value)
+			=> @this.Modify(request => request.Headers.TransferEncodingChunked = value);
 
-		public static Omicron Upgrade(this Omicron @this, ProductHeaderValue value)
+		public static IRequest Upgrade(this IRequest @this, ProductHeaderValue value)
 			=> @this.AddHeaderValue(headers => headers.Upgrade, value);
 
-		public static Omicron Upgrade(this Omicron @this, string name)
+		public static IRequest Upgrade(this IRequest @this, string name)
 			=> @this.Upgrade(new ProductHeaderValue(name));
 
-		public static Omicron Upgrade(this Omicron @this, string name, string version)
+		public static IRequest Upgrade(this IRequest @this, string name, string version)
 			=> @this.Upgrade(new ProductHeaderValue(name, version));
 
-		public static Omicron UserAgent(this Omicron @this, ProductInfoHeaderValue value)
+		public static IRequest UserAgent(this IRequest @this, ProductInfoHeaderValue value)
 			=> @this.AddHeaderValue(headers => headers.UserAgent, value);
 
-		public static Omicron UserAgent(this Omicron @this, ProductHeaderValue product)
+		public static IRequest UserAgent(this IRequest @this, ProductHeaderValue product)
 			=> @this.UserAgent(new ProductInfoHeaderValue(product));
 
-		public static Omicron UserAgent(this Omicron @this, string comment)
+		public static IRequest UserAgent(this IRequest @this, string comment)
 			=> @this.UserAgent(new ProductInfoHeaderValue(comment));
 
-		public static Omicron UserAgent(this Omicron @this, string productName, string productVersion)
+		public static IRequest UserAgent(this IRequest @this, string productName, string productVersion)
 			=> @this.UserAgent(new ProductInfoHeaderValue(productName, productVersion));
 
-		public static Omicron Via(this Omicron @this, ViaHeaderValue value)
+		public static IRequest Via(this IRequest @this, ViaHeaderValue value)
 			=> @this.AddHeaderValue(headers => headers.Via, value);
 
-		public static Omicron Via(this Omicron @this, string protocolVersion, string receivedBy)
+		public static IRequest Via(this IRequest @this, string protocolVersion, string receivedBy)
 			=> @this.Via(new ViaHeaderValue(protocolVersion, receivedBy));
 
-		public static Omicron Via(this Omicron @this, string protocolVersion, string receivedBy, string protocolName)
+		public static IRequest Via(this IRequest @this, string protocolVersion, string receivedBy, string protocolName)
 			=> @this.Via(new ViaHeaderValue(protocolVersion, receivedBy, protocolName));
 
-		public static Omicron Via(this Omicron @this, string protocolVersion, string receivedBy, string protocolName, string comment)
+		public static IRequest Via(this IRequest @this, string protocolVersion, string receivedBy, string protocolName, string comment)
 			=> @this.Via(new ViaHeaderValue(protocolVersion, receivedBy, protocolName, comment));
 
-		public static Omicron Warning(this Omicron @this, WarningHeaderValue value)
+		public static IRequest Warning(this IRequest @this, WarningHeaderValue value)
 			=> @this.AddHeaderValue(headers => headers.Warning, value);
 
-		public static Omicron Warning(this Omicron @this, int code, string agent, string text)
+		public static IRequest Warning(this IRequest @this, int code, string agent, string text)
 			=> @this.Warning(new WarningHeaderValue(code, agent, text));
 
-		public static Omicron Warning(this Omicron @this, int code, string agent, string text, DateTimeOffset date)
+		public static IRequest Warning(this IRequest @this, int code, string agent, string text, DateTimeOffset date)
 			=> @this.Warning(new WarningHeaderValue(code, agent, text, date));
 
-		internal static Omicron AddHeaderValue<T>(this Omicron @this, Func<HttpRequestHeaders, ICollection<T>> selector, T value)
-			=> @this.Return(() => @this.AddModification(request => selector(request.Headers).Add(value)));
+		internal static IRequest AddHeaderValue<T>(this IRequest @this, Func<HttpRequestHeaders, ICollection<T>> selector, T value)
+			=> @this.Modify(request => selector(request.Headers).Add(value));
 	}
 }

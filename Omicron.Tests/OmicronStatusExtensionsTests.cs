@@ -19,11 +19,9 @@ namespace Omicron.Tests
 		{
 			var httpService = Substitute.For<IHttpService>();
 			httpService.SendAsync(Arg.Any<HttpRequestMessage>()).ReturnsForAnyArgs(new HttpResponseMessage((HttpStatusCode)statusCode));
+			var request = new Request(httpService, HttpMethod.Head, string.Empty);
 
-			var omicron = new Omicron(httpService, HttpMethod.Head, string.Empty);
-			omicron.Has.Status(statusCode);
-
-			Func<Task> run = omicron.Run;
+			Action run = () => request.Has.Status(statusCode);
 
 			run.Should().NotThrow();
 		}
@@ -36,13 +34,11 @@ namespace Omicron.Tests
 		{
 			var httpService = Substitute.For<IHttpService>();
 			httpService.SendAsync(Arg.Any<HttpRequestMessage>()).ReturnsForAnyArgs(new HttpResponseMessage((HttpStatusCode)actualStatusCode));
+			var request = new Request(httpService, HttpMethod.Head, string.Empty);
 
-			var omicron = new Omicron(httpService, HttpMethod.Head, string.Empty);
-			omicron.Has.Status(expectedStatusCode);
+			Action run = () => request.Has.Status(expectedStatusCode);
 
-			Func<Task> run = omicron.Run;
-
-			run.Should().Throw<OmicronAssertionException>().WithMessage($"Expected status {expectedStatusCode} but got {actualStatusCode}");
+			run.Should().Throw<OmicronException>().WithMessage($"Expected status {expectedStatusCode} but got {actualStatusCode}");
 		}
 	}
 }
