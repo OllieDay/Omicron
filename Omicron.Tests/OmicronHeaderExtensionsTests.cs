@@ -97,11 +97,11 @@ namespace Omicron.Tests
 			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Connection("keep-alive"), "Connection", "keep-alive");
 
 		[Fact]
-		public async Task ShouldAddConnectionCloseHeaderWithValue()
+		public async Task ShouldAddConnectionHeaderWithValueTrue()
 			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.ConnectionClose(true), "Connection", "close");
 
 		[Fact]
-		public async Task ShouldNotAddConnectionCloseHeaderWithValue()
+		public async Task ShouldNotAddConnectionHeaderWithValueFalse()
 			=> await SetHeaderAndVerifyIsNotSet(omicron => omicron.With.ConnectionClose(false), "Connection");
 
 		[Fact]
@@ -125,11 +125,11 @@ namespace Omicron.Tests
 			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Expect("name", "value"), "Expect", "name=value");
 
 		[Fact]
-		public async Task ShouldAddExpectContinueHeaderWithNameAndValue()
+		public async Task ShouldAddExpectHeaderWithValueTrue()
 			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.ExpectContinue(true), "Expect", "100-continue");
 
 		[Fact]
-		public async Task ShouldNotAddExpectContinueHeaderWithNameAndValue()
+		public async Task ShouldNotAddExpectContinueHeaderWithValueFalse()
 			=> await SetHeaderAndVerifyIsNotSet(omicron => omicron.With.ExpectContinue(false), "Expect");
 
 		[Fact]
