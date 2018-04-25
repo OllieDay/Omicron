@@ -285,6 +285,34 @@ namespace Omicron.Tests
 		public async Task ShouldNotAddTransferEncodingHeaderWithValueFalse()
 			=> await SetHeaderAndVerifyIsNotSet(omicron => omicron.With.TransferEncodingChunked(false), "Transfer-Encoding-Chunked");
 
+		[Fact]
+		public async Task ShouldAddUpgradeHeaderWithProductHeaderValue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Upgrade(new ProductHeaderValue("h2c")), "Upgrade", "h2c");
+
+		[Fact]
+		public async Task ShouldAddUpgradeHeaderWithName()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Upgrade("h2c"), "Upgrade", "h2c");
+
+		[Fact]
+		public async Task ShouldAddUpgradeHeaderWithNameAndVersion()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Upgrade("HTTP", "2"), "Upgrade", "HTTP/2");
+
+		[Fact]
+		public async Task ShouldAddUserAgentHeaderWithProductInfoHeaderValue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.UserAgent(new ProductInfoHeaderValue("Mozilla", "1.0")), "User-Agent", "Mozilla/1.0");
+
+		[Fact]
+		public async Task ShouldAddUserAgentHeaderWithProductHeaderValue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.UserAgent(new ProductHeaderValue("Mozilla", "1.0")), "User-Agent", "Mozilla/1.0");
+
+		[Fact]
+		public async Task ShouldAddUserAgentHeaderWithComment()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.UserAgent("(...)"), "User-Agent", "(...)");
+
+		[Fact]
+		public async Task ShouldAddUserAgentHeaderWithProductNameAndProductVersion()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.UserAgent("Mozilla", "1.0"), "User-Agent", "Mozilla/1.0");
+
 		private static async Task SetHeaderAndVerifyIsSet(Action<Omicron> setter, string name, params string[] expectedValues)
 		{
 			var httpService = Substitute.For<IHttpService>();

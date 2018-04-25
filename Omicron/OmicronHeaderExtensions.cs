@@ -171,6 +171,27 @@ namespace Omicron
 		public static Omicron TransferEncodingChunked(this Omicron @this, bool value)
 			=> @this.AddModification(request => request.Headers.TransferEncodingChunked = value);
 
+		public static Omicron Upgrade(this Omicron @this, ProductHeaderValue value)
+			=> @this.AddHeaderValue(headers => headers.Upgrade, value);
+
+		public static Omicron Upgrade(this Omicron @this, string name)
+			=> @this.Upgrade(new ProductHeaderValue(name));
+
+		public static Omicron Upgrade(this Omicron @this, string name, string version)
+			=> @this.Upgrade(new ProductHeaderValue(name, version));
+
+		public static Omicron UserAgent(this Omicron @this, ProductInfoHeaderValue value)
+			=> @this.AddHeaderValue(headers => headers.UserAgent, value);
+
+		public static Omicron UserAgent(this Omicron @this, ProductHeaderValue product)
+			=> @this.UserAgent(new ProductInfoHeaderValue(product));
+
+		public static Omicron UserAgent(this Omicron @this, string comment)
+			=> @this.UserAgent(new ProductInfoHeaderValue(comment));
+
+		public static Omicron UserAgent(this Omicron @this, string productName, string productVersion)
+			=> @this.UserAgent(new ProductInfoHeaderValue(productName, productVersion));
+
 		internal static Omicron AddHeaderValue<T>(this Omicron @this, Func<HttpRequestHeaders, ICollection<T>> selector, T value)
 			=> @this.Return(() => @this.AddModification(request => selector(request.Headers).Add(value)));
 	}
