@@ -313,6 +313,38 @@ namespace Omicron.Tests
 		public async Task ShouldAddUserAgentHeaderWithProductNameAndProductVersion()
 			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.UserAgent("Mozilla", "1.0"), "User-Agent", "Mozilla/1.0");
 
+		[Fact]
+		public async Task ShouldAddViaHeaderWithViaHeaderValue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Via(new ViaHeaderValue("1.0", "received-by")), "Via", "1.0 received-by");
+
+		[Fact]
+		public async Task ShouldAddViaHeaderWithProtocolVersionAndReceivedBy()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Via("1.0", "received-by"), "Via", "1.0 received-by");
+
+		[Fact]
+		public async Task ShouldAddViaHeaderWithProtocolVersionAndReceivedByAndProtocolName()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Via("1.0", "received-by", "HTTP"), "Via", "HTTP/1.0 received-by");
+
+		[Fact]
+		public async Task ShouldAddViaHeaderWithProtocolVersionAndReceivedByAndProtocolNameAndComment()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Via("1.0", "received-by", "HTTP", "(comment)"), "Via", "HTTP/1.0 received-by (comment)");
+
+		[Fact]
+		public async Task ShouldAddWarningHeaderWithWarningHeaderValue()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Warning(new WarningHeaderValue(110, "agent", @"""Response is stale""")), "Warning", @"110 agent ""Response is stale""");
+
+		[Fact]
+		public async Task ShouldAddWarningHeaderWithCodeAndAgentAndText()
+			=> await SetHeaderAndVerifyIsSet(omicron => omicron.With.Warning(110, "agent", @"""Response is stale"""), "Warning", @"110 agent ""Response is stale""");
+
+		[Fact]
+		public async Task ShouldAddWarningHeaderWithCodeAndAgentAndTextAndDate()
+		{
+			var date = DateTimeOffset.Now;
+
+			await SetHeaderAndVerifyIsSet(omicron => omicron.With.Warning(110, "agent", @"""Response is stale""", date), "Warning", $@"110 agent ""Response is stale"" ""{date.ToString("r")}""");
+		}
+
 		private static async Task SetHeaderAndVerifyIsSet(Action<Omicron> setter, string name, params string[] expectedValues)
 		{
 			var httpService = Substitute.For<IHttpService>();

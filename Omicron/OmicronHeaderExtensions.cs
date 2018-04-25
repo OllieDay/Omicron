@@ -192,6 +192,27 @@ namespace Omicron
 		public static Omicron UserAgent(this Omicron @this, string productName, string productVersion)
 			=> @this.UserAgent(new ProductInfoHeaderValue(productName, productVersion));
 
+		public static Omicron Via(this Omicron @this, ViaHeaderValue value)
+			=> @this.AddHeaderValue(headers => headers.Via, value);
+
+		public static Omicron Via(this Omicron @this, string protocolVersion, string receivedBy)
+			=> @this.Via(new ViaHeaderValue(protocolVersion, receivedBy));
+
+		public static Omicron Via(this Omicron @this, string protocolVersion, string receivedBy, string protocolName)
+			=> @this.Via(new ViaHeaderValue(protocolVersion, receivedBy, protocolName));
+
+		public static Omicron Via(this Omicron @this, string protocolVersion, string receivedBy, string protocolName, string comment)
+			=> @this.Via(new ViaHeaderValue(protocolVersion, receivedBy, protocolName, comment));
+
+		public static Omicron Warning(this Omicron @this, WarningHeaderValue value)
+			=> @this.AddHeaderValue(headers => headers.Warning, value);
+
+		public static Omicron Warning(this Omicron @this, int code, string agent, string text)
+			=> @this.Warning(new WarningHeaderValue(code, agent, text));
+
+		public static Omicron Warning(this Omicron @this, int code, string agent, string text, DateTimeOffset date)
+			=> @this.Warning(new WarningHeaderValue(code, agent, text, date));
+
 		internal static Omicron AddHeaderValue<T>(this Omicron @this, Func<HttpRequestHeaders, ICollection<T>> selector, T value)
 			=> @this.Return(() => @this.AddModification(request => selector(request.Headers).Add(value)));
 	}
