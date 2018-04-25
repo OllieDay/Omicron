@@ -1,6 +1,6 @@
 namespace Omicron
 {
-	public static class OmicronStatusExtensions
+	public static class StatusExtensions
 	{
 		public static IResponse Status(this IResponse @this, int statusCode)
 		{

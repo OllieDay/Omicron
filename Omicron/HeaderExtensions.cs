@@ -4,7 +4,7 @@ using System.Net.Http.Headers;
 
 namespace Omicron
 {
-	public static class OmicronHeaderExtensions
+	public static class HeaderExtensions
 	{
 		public static IRequest Header(this IRequest @this, string name, params string[] values)
 			=> @this.Modify(request => request.Headers.Add(name, values));
