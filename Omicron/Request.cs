@@ -8,15 +8,13 @@ namespace Omicron
 	internal class Request : IRequest
 	{
 		private readonly IHttpService _httpService;
-		private readonly HttpMethod _method;
-		private readonly string _uri;
+		private readonly HttpRequestMessage _request;
 		private readonly IList<Action<HttpRequestMessage>> _modifications = new List<Action<HttpRequestMessage>>();
 
 		public Request(IHttpService httpService, HttpMethod method, string uri)
 		{
 			_httpService = httpService;
-			_method = method;
-			_uri = uri;
+			_request = new HttpRequestMessage(method, uri);
 		}
 
 		public IRequest With => this;
@@ -33,20 +31,22 @@ namespace Omicron
 		public IResponse Assert(Action<HttpResponseMessage> assertion)
 			=> SendRequest().Assert(assertion);
 
+		public void Dispose()
+		{
+			_request.Dispose();
+		}
+
 		private IResponse SendRequest()
 		{
-			using (var request = new HttpRequestMessage(_method, _uri))
+			foreach (var modification in _modifications)
 			{
-				foreach (var modification in _modifications)
-				{
-					modification(request);
-				}
-
-				// This must be called synchronously to preserve the fluent interface
-				var response = _httpService.SendAsync(request).GetAwaiter().GetResult();
-
-				return new Response(response);
+				modification(_request);
 			}
+
+			// This must be called synchronously to preserve the fluent interface
+			var response = _httpService.SendAsync(_request).GetAwaiter().GetResult();
+
+			return new Response(response);
 		}
 	}
 }

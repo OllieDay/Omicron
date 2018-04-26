@@ -3,7 +3,7 @@ using System.Net.Http;
 
 namespace Omicron
 {
-	public interface IResponse
+	public interface IResponse : IDisposable
 	{
 		IResponse Is { get; }
 		IResponse Has { get; }

@@ -21,5 +21,10 @@ namespace Omicron
 
 			return this;
 		}
+
+		public void Dispose()
+		{
+			_response.Dispose();
+		}
 	}
 }
