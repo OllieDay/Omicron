@@ -51,7 +51,10 @@ namespace Omicron
 			=> @this.Content(new StreamContent(content, bufferSize));
 
 		public static IRequest Json(this IRequest @this, object content)
-			=> @this.Content(new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json"));
+			=> @this.Json(JsonConvert.SerializeObject(content));
+
+		public static IRequest Json(this IRequest @this, string content)
+			=> @this.Content(new StringContent(content, Encoding.UTF8, "application/json"));
 
 		private static IRequest Multipart(this IRequest @this, MultipartContent content, params HttpContent[] values)
 		{
