@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Text;
+using System.Xml.Linq;
 using Newtonsoft.Json;
 
 namespace Omicron
@@ -55,6 +56,12 @@ namespace Omicron
 
 		public static IRequest Json(this IRequest @this, string content)
 			=> @this.Content(new StringContent(content, Encoding.UTF8, "application/json"));
+
+		public static IRequest Xml(this IRequest @this, XDocument content)
+			=> @this.Xml(content.ToString());
+
+		public static IRequest Xml(this IRequest @this, string content)
+			=> @this.Content(new StringContent(content, Encoding.UTF8, "application/xml"));
 
 		private static IRequest Multipart(this IRequest @this, MultipartContent content, params HttpContent[] values)
 		{

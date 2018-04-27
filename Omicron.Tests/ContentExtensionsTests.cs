@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using MockableHttp;
 using NSubstitute;
 using Xunit;
@@ -108,6 +109,22 @@ namespace Omicron.Tests
 		[Fact]
 		public async Task ShouldSetContentTypeHeaderToApplicationJsonWhenContentIsJsonString()
 			=> await SetContentAndVerifyContentTypeHeaderIsSet(request => request.With.Json("{}"), "application/json; charset=utf-8");
+
+		[Fact]
+		public async Task ShouldSetContentToXmlObjectWithContent()
+			=> await SetContentAndVerifyIsSet(request => request.With.Xml(new XDocument(new XElement("root"))), "<root />");
+
+		[Fact]
+		public async Task ShouldSetContentTypeHeaderToApplicationXmlWhenContentIsXmlObject()
+			=> await SetContentAndVerifyContentTypeHeaderIsSet(request => request.With.Xml(new XDocument(new XElement("root"))), "application/xml; charset=utf-8");
+
+		[Fact]
+		public async Task ShouldSetContentToXmlStringWithContent()
+			=> await SetContentAndVerifyIsSet(request => request.With.Xml("<root />"), "<root />");
+
+		[Fact]
+		public async Task ShouldSetContentTypeHeaderToApplicationXmlWhenContentIsXmlString()
+			=> await SetContentAndVerifyContentTypeHeaderIsSet(request => request.With.Xml("<root />"), "application/xml; charset=utf-8");
 
 		private static async Task SetContentAndVerifyIsSet(Action<IRequest> setter, string content)
 		{
