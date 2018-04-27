@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace Omicron
 {
-	public static class ContentExtensions
+	public static class RequestContentExtensions
 	{
 		public static IRequest Content(this IRequest @this, HttpContent content)
 			=> @this.Modify(request => request.Content = content);

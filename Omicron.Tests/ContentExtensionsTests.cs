@@ -13,7 +13,7 @@ using Xunit;
 
 namespace Omicron.Tests
 {
-	public sealed class ContentExtensionTests
+	public sealed class RequestContentExtensionTests
 	{
 		[Fact]
 		public async Task ShouldSetContentToHttpContentWithContent()

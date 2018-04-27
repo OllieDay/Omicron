@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Omicron.Tests
 {
-	public sealed class QueryExtensionTests
+	public sealed class RequestQueryExtensionTests
 	{
 		[Fact]
 		public async Task ShouldAddQueryWithNameAsFirstQuery()

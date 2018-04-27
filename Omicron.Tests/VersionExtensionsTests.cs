@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Omicron.Tests
 {
-	public sealed class VersionExtensionTests
+	public sealed class RequestVersionExtensionTests
 	{
 		[Theory]
 		[InlineData(1, 0)]

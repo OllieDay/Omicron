@@ -2,7 +2,7 @@ using System;
 
 namespace Omicron
 {
-	public static class QueryExtensions
+	public static class RequestQueryExtensions
 	{
 		public static IRequest Query(this IRequest @this, string name)
 			=> @this.Modify(request => request.RequestUri = AppendQuery(request.RequestUri, name));

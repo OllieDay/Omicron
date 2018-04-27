@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Omicron.Tests
 {
-	public sealed class HeaderExtensionsTests
+	public sealed class RequestHeaderExtensionsTests
 	{
 		[Fact]
 		public async Task ShouldAddHeaderWithValues()

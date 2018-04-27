@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Omicron.Tests
 {
-	public sealed class StatusExtensionsTests
+	public sealed class ResponseStatusExtensionsTests
 	{
 		[Theory]
 		[InlineData(100)]
