@@ -94,12 +94,20 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public async Task ShouldSetContentToJsonStringWithContent()
+		public async Task ShouldSetContentToJsonObjectWithContent()
 			=> await SetContentAndVerifyIsSet(request => request.With.Json(new {}), "{}");
 
 		[Fact]
-		public async Task ShouldSetContentTypeHeaderToApplicationJsonWhenContentIsJsonString()
+		public async Task ShouldSetContentTypeHeaderToApplicationJsonWhenContentIsJsonObject()
 			=> await SetContentAndVerifyContentTypeHeaderIsSet(request => request.With.Json(new {}), "application/json; charset=utf-8");
+
+		[Fact]
+		public async Task ShouldSetContentToJsonStringWithContent()
+			=> await SetContentAndVerifyIsSet(request => request.With.Json("{}"), "{}");
+
+		[Fact]
+		public async Task ShouldSetContentTypeHeaderToApplicationJsonWhenContentIsJsonString()
+			=> await SetContentAndVerifyContentTypeHeaderIsSet(request => request.With.Json("{}"), "application/json; charset=utf-8");
 
 		private static async Task SetContentAndVerifyIsSet(Action<IRequest> setter, string content)
 		{
