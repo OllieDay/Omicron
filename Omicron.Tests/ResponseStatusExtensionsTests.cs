@@ -15,13 +15,11 @@ namespace Omicron.Tests
 		[InlineData(100)]
 		[InlineData(200)]
 		[InlineData(400)]
-		public void ShouldNotThrowExceptionWhenStatusAssertionSucceeds(int statusCode)
+		public void ShouldNotThrowExceptionWhenStatusWithStatusCodeSucceeds(int statusCode)
 		{
-			var httpService = Substitute.For<IHttpService>();
-			httpService.SendAsync(Arg.Any<HttpRequestMessage>()).ReturnsForAnyArgs(new HttpResponseMessage((HttpStatusCode)statusCode));
-			var request = new Request(httpService, HttpMethod.Head, string.Empty);
+			var response = CreateResponseWithStatusCode(statusCode);
 
-			Action run = () => request.Has.Status(statusCode);
+			Action run = () => response.Has.Status(statusCode);
 
 			run.Should().NotThrow();
 		}
@@ -30,15 +28,48 @@ namespace Omicron.Tests
 		[InlineData(100, 101)]
 		[InlineData(200, 400)]
 		[InlineData(500, 200)]
-		public void ShouldThrowExceptionWhenStatusAssertionFails(int expectedStatusCode, int actualStatusCode)
+		public void ShouldThrowExceptionWhenStatusWithStatusCodeFails(int expectedStatusCode, int actualStatusCode)
 		{
-			var httpService = Substitute.For<IHttpService>();
-			httpService.SendAsync(Arg.Any<HttpRequestMessage>()).ReturnsForAnyArgs(new HttpResponseMessage((HttpStatusCode)actualStatusCode));
-			var request = new Request(httpService, HttpMethod.Head, string.Empty);
+			var response = CreateResponseWithStatusCode(actualStatusCode);
 
-			Action run = () => request.Has.Status(expectedStatusCode);
+			Action run = () => response.Has.Status(expectedStatusCode);
 
 			run.Should().Throw<Exception>().WithMessage($@"Expected status ""{expectedStatusCode}"" but got ""{actualStatusCode}""");
+		}
+
+		[Theory]
+		[InlineData(100)]
+		[InlineData(200)]
+		[InlineData(400)]
+		public void ShouldNotThrowExceptionWhenStatusWithPredicateSucceeds(int statusCode)
+		{
+			var response = CreateResponseWithStatusCode(statusCode);
+
+			Action run = () => response.Has.Status(_ => true);
+
+			run.Should().NotThrow();
+		}
+
+		[Theory]
+		[InlineData(100)]
+		[InlineData(200)]
+		[InlineData(400)]
+		public void ShouldThrowExceptionWhenStatusWithPredicateFails(int statusCode)
+		{
+			var response = CreateResponseWithStatusCode(statusCode);
+
+			Action run = () => response.Has.Status(_ => false);
+
+			run.Should().Throw<Exception>().WithMessage($@"Expected status ""{statusCode}"" to match");
+		}
+
+		private static IResponse CreateResponseWithStatusCode(int statusCode)
+		{
+			var httpService = Substitute.For<IHttpService>();
+			httpService.SendAsync(Arg.Any<HttpRequestMessage>()).ReturnsForAnyArgs(new HttpResponseMessage((HttpStatusCode)statusCode));
+			var request = new Request(httpService, HttpMethod.Head, string.Empty);
+
+			return request.Assert(Stubs.Noop);
 		}
 	}
 }

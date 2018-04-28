@@ -1,3 +1,5 @@
+using System;
+
 namespace Omicron
 {
 	public static class ResponseStatusExtensions
@@ -11,6 +13,19 @@ namespace Omicron
 				if (responseStatusCode != statusCode)
 				{
 					throw new OmicronException($@"Expected status ""{statusCode}"" but got ""{responseStatusCode}""");
+				}
+			});
+		}
+
+		public static IResponse Status(this IResponse @this, Func<int, bool> predicate)
+		{
+			return @this.Assert(response =>
+			{
+				var responseStatusCode = (int)response.StatusCode;
+
+				if (!predicate(responseStatusCode))
+				{
+					throw new OmicronException($@"Expected status ""{responseStatusCode}"" to match");
 				}
 			});
 		}
