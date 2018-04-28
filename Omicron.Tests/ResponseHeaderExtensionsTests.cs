@@ -80,26 +80,6 @@ namespace Omicron.Tests
 			run.Should().Throw<Exception>().WithMessage(@"Expected headers ""X-Omicron"" to match");
 		}
 
-		[Fact]
-		public void ShouldNotThrowExceptionWhenHeadersWithPredicateIsSet()
-		{
-			var values = new[] { "Omicron 1", "Omicron 2" };
-
-			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", values), request => request.Has.Header("X-Omicron", _ => true));
-
-			run.Should().NotThrow();
-		}
-
-		[Fact]
-		public void ShouldThrowExceptionWhenHeadersWithPredicateIsNotSet()
-		{
-			var values = new[] { "Omicron 1", "Omicron 2" };
-
-			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", values), request => request.Has.Header("X-Omicron", _ => false));
-
-			run.Should().Throw<Exception>().WithMessage(@"Expected headers ""X-Omicron"" to match");
-		}
-
 		private static void SetHeaderAndVerifyIsSet(Action<HttpResponseHeaders> setter, Action<IRequest> verifier)
 		{
 			var httpService = Substitute.For<IHttpService>();
