@@ -213,7 +213,7 @@ namespace Omicron
 		public static IRequest Warning(this IRequest @this, int code, string agent, string text, DateTimeOffset date)
 			=> @this.Warning(new WarningHeaderValue(code, agent, text, date));
 
-		internal static IRequest AddHeaderValue<T>(this IRequest @this, Func<HttpRequestHeaders, ICollection<T>> selector, T value)
+		private static IRequest AddHeaderValue<T>(this IRequest @this, Func<HttpRequestHeaders, ICollection<T>> selector, T value)
 			=> @this.Modify(request => selector(request.Headers).Add(value));
 	}
 }
