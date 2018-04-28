@@ -1,4 +1,4 @@
-namespace Omicron
+namespace Omicron.Tests
 {
 	public static class Stubs
 	{
