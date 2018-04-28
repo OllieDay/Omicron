@@ -10,7 +10,7 @@ namespace Omicron
 			{
 				if (response.Version != version)
 				{
-					throw new OmicronException($"Expected version {version} but got {response.Version}");
+					throw new OmicronException($@"Expected version ""{version}"" but got ""{response.Version}""");
 				}
 			});
 		}

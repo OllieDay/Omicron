@@ -49,7 +49,7 @@ namespace Omicron.Tests
 
 			Action run = () => request.Has.Version(version);
 
-			run.Should().Throw<Exception>().WithMessage($"Expected version {version} but got 0.0");
+			run.Should().Throw<Exception>().WithMessage($@"Expected version ""{version}"" but got ""0.0""");
 		}
 	}
 }

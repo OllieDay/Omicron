@@ -38,7 +38,7 @@ namespace Omicron.Tests
 
 			Action run = () => request.Has.Status(expectedStatusCode);
 
-			run.Should().Throw<Exception>().WithMessage($"Expected status {expectedStatusCode} but got {actualStatusCode}");
+			run.Should().Throw<Exception>().WithMessage($@"Expected status ""{expectedStatusCode}"" but got ""{actualStatusCode}""");
 		}
 	}
 }

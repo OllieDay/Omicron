@@ -10,7 +10,7 @@ namespace Omicron
 
 				if (responseStatusCode != statusCode)
 				{
-					throw new OmicronException($"Expected status {statusCode} but got {responseStatusCode}");
+					throw new OmicronException($@"Expected status ""{statusCode}"" but got ""{responseStatusCode}""");
 				}
 			});
 		}

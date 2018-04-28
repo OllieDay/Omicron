@@ -16,16 +16,16 @@ namespace Omicron
 			{
 				if (!response.Headers.TryGetValues(name, out var values))
 				{
-					throw new OmicronException($"Expected header {name}");
+					throw new OmicronException($@"Expected header ""{name}""");
 				}
 
 				if (!values.Contains(value))
 				{
-					var message = new StringBuilder($"Expected header {name}: {value} but got:");
+					var message = new StringBuilder($@"Expected header ""{name}: {value}"" but got:");
 
 					foreach (var headerValue in values)
 					{
-						message.Append($"\n\t{name}: {headerValue}");
+						message.Append($@"\n\t""{name}: {headerValue}""");
 					}
 
 					throw new OmicronException(message.ToString());
@@ -39,12 +39,12 @@ namespace Omicron
 			{
 				if (!response.Headers.TryGetValues(name, out var values))
 				{
-					throw new OmicronException($"Expected header {name}");
+					throw new OmicronException($@"Expected header ""{name}""");
 				}
 
 				if (!values.Any(predicate))
 				{
-					throw new OmicronException($"Expected header {name} to match");
+					throw new OmicronException($@"Expected header ""{name}"" to match");
 				}
 			});
 		}
