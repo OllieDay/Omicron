@@ -24,7 +24,7 @@ namespace Omicron.Tests
 		{
 			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", "Omicron"), request => request.Has.Header("Norcimo"));
 
-			run.Should().Throw<Exception>();
+			run.Should().Throw<Exception>().WithMessage("Expected header Norcimo");
 		}
 
 		[Fact]
@@ -40,7 +40,7 @@ namespace Omicron.Tests
 		{
 			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", "Omicron"), request => request.Has.Header("X-Omicron", "Norcimo"));
 
-			run.Should().Throw<Exception>();
+			run.Should().Throw<Exception>().WithMessage("Expected header X-Omicron: Norcimo but got:\n\tX-Omicron: Omicron");
 		}
 
 		[Fact]
@@ -56,7 +56,7 @@ namespace Omicron.Tests
 		{
 			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", "Omicron"), request => request.Has.Header("X-Omicron", _ => false));
 
-			run.Should().Throw<Exception>();
+			run.Should().Throw<Exception>().WithMessage("Expected header X-Omicron to match");
 		}
 
 		private static void SetHeaderAndVerifyIsSet(Action<HttpResponseHeaders> setter, Action<IRequest> verifier)
