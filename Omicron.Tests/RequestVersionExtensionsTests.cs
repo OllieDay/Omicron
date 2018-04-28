@@ -10,16 +10,31 @@ namespace Omicron.Tests
 	public sealed class RequestVersionExtensionTests
 	{
 		[Theory]
+		[InlineData(0, 9)]
 		[InlineData(1, 0)]
 		[InlineData(1, 1)]
 		[InlineData(2, 0)]
-		public async Task ShouldSetVersion(int major, int minor)
+		public async Task ShouldSetVersionWithVersion(int major, int minor)
 		{
 			var version = new Version(major, minor);
+
+			await SetVersionAndVerifyIsSet(request => request.With.Version(version), version);
+		}
+
+		[Theory]
+		[InlineData("0.9")]
+		[InlineData("1.0")]
+		[InlineData("1.1")]
+		[InlineData("2.0")]
+		public async Task ShouldSetVersionWithStringVersion(string version)
+			=> await SetVersionAndVerifyIsSet(request => request.With.Version(version), new Version(version));
+
+		private static async Task SetVersionAndVerifyIsSet(Action<IRequest> setter, Version version)
+		{
 			var httpService = Substitute.For<IHttpService>();
 			var request = new Request(httpService, HttpMethod.Head, string.Empty);
 
-			request.Version(version);
+			setter(request);
 			request.Assert(Stubs.Noop);
 
 			await httpService.Received().SendAsync(Arg.Is<HttpRequestMessage>(httpRequestMessage =>

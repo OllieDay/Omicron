@@ -6,5 +6,8 @@ namespace Omicron
 	{
 		public static IRequest Version(this IRequest @this, Version version)
 			=> @this.Modify(request => request.Version = version);
+
+		public static IRequest Version(this IRequest @this, string version)
+			=> @this.Version(new Version(version));
 	}
 }
