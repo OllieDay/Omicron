@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace Omicron.Tests
 		{
 			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", "Omicron"), request => request.Has.Header("Norcimo"));
 
-			run.Should().Throw<Exception>().WithMessage(@"Expected header ""Norcimo""");
+			run.Should().Throw<Exception>().WithMessage(@"Expected headers ""Norcimo""");
 		}
 
 		[Fact]
@@ -40,7 +41,27 @@ namespace Omicron.Tests
 		{
 			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", "Omicron"), request => request.Has.Header("X-Omicron", "Norcimo"));
 
-			run.Should().Throw<Exception>().WithMessage(@"Expected header ""X-Omicron: Norcimo"" but got:\n\t""X-Omicron: Omicron""");
+			run.Should().Throw<Exception>();
+		}
+
+		[Fact]
+		public void ShouldNotThrowExceptionWhenHeadersWithNameAndValuesIsSet()
+		{
+			var values = new[] { "Omicron 1", "Omicron 2" };
+
+			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", values), request => request.Has.Header("X-Omicron", values.First(), values.Last()));
+
+			run.Should().NotThrow();
+		}
+
+		[Fact]
+		public void ShouldThrowExceptionWhenHeadersWithNameAndValuesIsNotSet()
+		{
+			var values = new[] { "Omicron 1", "Omicron 2" };
+
+			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", values), request => request.Has.Header("X-Omicron", values.First(), "Norcimo"));
+
+			run.Should().Throw<Exception>();
 		}
 
 		[Fact]
@@ -56,7 +77,27 @@ namespace Omicron.Tests
 		{
 			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", "Omicron"), request => request.Has.Header("X-Omicron", _ => false));
 
-			run.Should().Throw<Exception>().WithMessage(@"Expected header ""X-Omicron"" to match");
+			run.Should().Throw<Exception>().WithMessage(@"Expected headers ""X-Omicron"" to match");
+		}
+
+		[Fact]
+		public void ShouldNotThrowExceptionWhenHeadersWithPredicateIsSet()
+		{
+			var values = new[] { "Omicron 1", "Omicron 2" };
+
+			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", values), request => request.Has.Header("X-Omicron", _ => true));
+
+			run.Should().NotThrow();
+		}
+
+		[Fact]
+		public void ShouldThrowExceptionWhenHeadersWithPredicateIsNotSet()
+		{
+			var values = new[] { "Omicron 1", "Omicron 2" };
+
+			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", values), request => request.Has.Header("X-Omicron", _ => false));
+
+			run.Should().Throw<Exception>().WithMessage(@"Expected headers ""X-Omicron"" to match");
 		}
 
 		private static void SetHeaderAndVerifyIsSet(Action<HttpResponseHeaders> setter, Action<IRequest> verifier)
