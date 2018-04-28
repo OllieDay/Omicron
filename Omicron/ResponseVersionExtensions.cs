@@ -14,5 +14,16 @@ namespace Omicron
 				}
 			});
 		}
+
+		public static IResponse Version(this IResponse @this, Func<Version, bool> predicate)
+		{
+			return @this.Assert(response =>
+			{
+				if (!predicate(response.Version))
+				{
+					throw new OmicronException($@"Expected version ""{response.Version}"" to match");
+				}
+			});
+		}
 	}
 }

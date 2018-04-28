@@ -14,7 +14,7 @@ namespace Omicron.Tests
 		[InlineData(1, 0)]
 		[InlineData(1, 1)]
 		[InlineData(2, 0)]
-		public void ShouldNotThrowExceptionWhenVersionSucceeds(int major, int minor)
+		public void ShouldNotThrowExceptionWhenVersionWithVersionSucceeds(int major, int minor)
 		{
 			var version = new Version(major, minor);
 			var response = CreateResponseWithVersion(version);
@@ -28,7 +28,7 @@ namespace Omicron.Tests
 		[InlineData(1, 0)]
 		[InlineData(1, 1)]
 		[InlineData(2, 0)]
-		public void ShouldThrowExceptionWhenVersionFails(int major, int minor)
+		public void ShouldThrowExceptionWhenVersionWithVersionFails(int major, int minor)
 		{
 			var version = new Version(major, minor);
 			var response = CreateResponseWithVersion(new Version(0, 0));
@@ -36,6 +36,27 @@ namespace Omicron.Tests
 			Action run = () => response.Has.Version(version);
 
 			run.Should().Throw<Exception>().WithMessage($@"Expected version ""{version}"" but got ""0.0""");
+		}
+
+		[Fact]
+		public void ShouldNotThrowExceptionWhenVersionWithPredicateSucceeds()
+		{
+			var response = CreateResponseWithVersion(new Version(1, 0));
+
+			Action run = () => response.Has.Version(_ => true);
+
+			run.Should().NotThrow();
+		}
+
+		[Fact]
+		public void ShouldThrowExceptionWhenVersionWithPredicateFails()
+		{
+			var version = new Version(1, 0);
+			var response = CreateResponseWithVersion(new Version(1, 0));
+
+			Action run = () => response.Has.Version(_ => false);
+
+			run.Should().Throw<Exception>().WithMessage($@"Expected version ""{version}"" to match");
 		}
 
 		private static IResponse CreateResponseWithVersion(Version version)
