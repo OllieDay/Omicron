@@ -14,5 +14,16 @@ namespace Omicron
 				}
 			});
 		}
+
+		public static IResponse ReasonPhrase(this IResponse @this, Func<string, bool> predicate)
+		{
+			return @this.Assert(response =>
+			{
+				if (!predicate(response.ReasonPhrase))
+				{
+					throw new OmicronException($@"Expected reason phrase ""{response.ReasonPhrase}"" to match");
+				}
+			});
+		}
 	}
 }

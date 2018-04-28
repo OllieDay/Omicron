@@ -15,18 +15,11 @@ namespace Omicron.Tests
 		[InlineData(200, "OK")]
 		[InlineData(400, "Bad Request")]
 		[InlineData(500, "Internal Server Error")]
-		public void ShouldNotThrowExceptionWhenReasonPhraseSucceeds(int statusCode, string reasonPhrase)
+		public void ShouldNotThrowExceptionWhenReasonPhraseWithReasonPhraseSucceeds(int statusCode, string reasonPhrase)
 		{
-			var httpService = Substitute.For<IHttpService>();
+			var response = CreateResponseWithReasonPhrase(statusCode);
 
-			httpService.SendAsync(Arg.Any<HttpRequestMessage>()).ReturnsForAnyArgs(new HttpResponseMessage
-			{
-				StatusCode = (HttpStatusCode)statusCode
-			});
-
-			var request = new Request(httpService, HttpMethod.Head, string.Empty);
-
-			Action run = () => request.Has.ReasonPhrase(reasonPhrase);
+			Action run = () => response.Has.ReasonPhrase(reasonPhrase);
 
 			run.Should().NotThrow();
 		}
@@ -35,20 +28,42 @@ namespace Omicron.Tests
 		[InlineData(200, "OK")]
 		[InlineData(400, "Bad Request")]
 		[InlineData(500, "Internal Server Error")]
-		public void ShouldThrowExceptionWhenReasonPhraseFails(int statusCode, string reasonPhrase)
+		public void ShouldThrowExceptionWhenReasonPhraseWithReasonPhraseFails(int statusCode, string reasonPhrase)
 		{
-			var httpService = Substitute.For<IHttpService>();
+			var response = CreateResponseWithReasonPhrase(statusCode);
 
-			httpService.SendAsync(Arg.Any<HttpRequestMessage>()).ReturnsForAnyArgs(new HttpResponseMessage
-			{
-				StatusCode = (HttpStatusCode)statusCode
-			});
-
-			var request = new Request(httpService, HttpMethod.Head, string.Empty);
-
-			Action run = () => request.Has.ReasonPhrase("Continue");
+			Action run = () => response.Has.ReasonPhrase("Continue");
 
 			run.Should().Throw<Exception>().WithMessage($@"Expected reason phrase ""Continue"" but got ""{reasonPhrase}""");
+		}
+
+		[Fact]
+		public void ShouldNotThrowExceptionWhenReasonPhraseWithPredicateSucceeds()
+		{
+			var response = CreateResponseWithReasonPhrase(200);
+
+			Action run = () => response.Has.ReasonPhrase(_ => true);
+
+			run.Should().NotThrow();
+		}
+
+		[Fact]
+		public void ShouldThrowExceptionWhenReasonPhraseWithPredicateFails()
+		{
+			var response = CreateResponseWithReasonPhrase(200);
+
+			Action run = () => response.Has.ReasonPhrase(_ => false);
+
+			run.Should().Throw<Exception>().WithMessage($@"Expected reason phrase ""OK"" to match");
+		}
+
+		private static IResponse CreateResponseWithReasonPhrase(int statusCode)
+		{
+			var httpService = Substitute.For<IHttpService>();
+			httpService.SendAsync(Arg.Any<HttpRequestMessage>()).ReturnsForAnyArgs(new HttpResponseMessage((HttpStatusCode)statusCode));
+			var request = new Request(httpService, HttpMethod.Head, string.Empty);
+
+			return request.Assert(Stubs.Noop);
 		}
 	}
 }
