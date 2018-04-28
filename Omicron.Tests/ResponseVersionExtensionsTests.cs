@@ -17,16 +17,9 @@ namespace Omicron.Tests
 		public void ShouldNotThrowExceptionWhenVersionSucceeds(int major, int minor)
 		{
 			var version = new Version(major, minor);
-			var httpService = Substitute.For<IHttpService>();
+			var response = CreateResponseWithVersion(version);
 
-			httpService.SendAsync(Arg.Any<HttpRequestMessage>()).ReturnsForAnyArgs(new HttpResponseMessage
-			{
-				Version = version
-			});
-
-			var request = new Request(httpService, HttpMethod.Head, string.Empty);
-
-			Action run = () => request.Has.Version(version);
+			Action run = () => response.Has.Version(version);
 
 			run.Should().NotThrow();
 		}
@@ -38,18 +31,25 @@ namespace Omicron.Tests
 		public void ShouldThrowExceptionWhenVersionFails(int major, int minor)
 		{
 			var version = new Version(major, minor);
+			var response = CreateResponseWithVersion(new Version(0, 0));
+
+			Action run = () => response.Has.Version(version);
+
+			run.Should().Throw<Exception>().WithMessage($@"Expected version ""{version}"" but got ""0.0""");
+		}
+
+		private static IResponse CreateResponseWithVersion(Version version)
+		{
 			var httpService = Substitute.For<IHttpService>();
 
 			httpService.SendAsync(Arg.Any<HttpRequestMessage>()).ReturnsForAnyArgs(new HttpResponseMessage
 			{
-				Version = new Version(0, 0)
+				Version = version
 			});
 
 			var request = new Request(httpService, HttpMethod.Head, string.Empty);
 
-			Action run = () => request.Has.Version(version);
-
-			run.Should().Throw<Exception>().WithMessage($@"Expected version ""{version}"" but got ""0.0""");
+			return request.Assert(Stubs.Noop);
 		}
 	}
 }
