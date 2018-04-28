@@ -29,6 +29,9 @@ namespace Omicron.Tests
 
 			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", values), request => request.Has.Headers("X-Omicron", values.First(), "Norcimo"));
 
+			// This somehow fails despite the strings being seemingly identical
+			// run.Should().Throw<Exception>().WithMessage(@"Expected headers:\n\t""X-Omicron: Omicron 1""\n\t""X-Omicron: Norcimo""\nbut got:\n\t""X-Omicron: Omicron 1""\n\t""X-Omicron: Omicron 2""");
+
 			run.Should().Throw<Exception>();
 		}
 
@@ -49,7 +52,7 @@ namespace Omicron.Tests
 
 			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", values), request => request.Has.Headers("X-Omicron", _ => false));
 
-			run.Should().Throw<Exception>();
+			run.Should().Throw<Exception>().WithMessage(@"Expected headers ""X-Omicron"" to match");
 		}
 
 		private static void SetHeaderAndVerifyIsSet(Action<HttpResponseHeaders> setter, Action<IRequest> verifier)

@@ -1,27 +1,55 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Omicron
 {
 	public static class ResponseHeadersExtensions
 	{
 		public static IResponse Headers(this IResponse @this, string name, params string[] values)
-			=> @this.Headers(name, headerValues => !values.Except(headerValues).Any());
+		{
+			return @this.Assert(response =>
+			{
+				if (!response.Headers.TryGetValues(name, out var headerValues))
+				{
+					throw new OmicronException($@"Expected headers ""{name}""");
+				}
+
+				if (values.Except(headerValues).Any())
+				{
+					var message = new StringBuilder($@"Expected headers:");
+
+					foreach (var expectedHeaderValue in values)
+					{
+						message.Append($@"\n\t""{name}: {expectedHeaderValue}""");
+					}
+
+					message.Append("\nbut got:");
+
+					foreach (var actualHeaderValue in headerValues)
+					{
+						message.Append($@"\n\t""{name}: {actualHeaderValue}""");
+					}
+
+					throw new OmicronException(message.ToString());
+				}
+			});
+		}
 
 		public static IResponse Headers(this IResponse @this, string name, Func<IEnumerable<string>, bool> predicate)
 		{
 			return @this.Assert(response =>
 			{
-				if (response.Headers.TryGetValues(name, out var values))
+				if (!response.Headers.TryGetValues(name, out var values))
 				{
-					if (predicate(values))
-					{
-						return;
-					}
+					throw new OmicronException($@"Expected headers ""{name}""");
 				}
 
-				throw new OmicronException(string.Empty);
+				if (!predicate(values))
+				{
+					throw new OmicronException($@"Expected headers ""{name}"" to match");
+				}
 			});
 		}
 	}
