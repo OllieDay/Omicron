@@ -77,7 +77,7 @@ namespace Omicron.Tests
 		{
 			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", "Omicron"), request => request.Has.Header("X-Omicron", _ => false));
 
-			run.Should().Throw<Exception>().WithMessage(@"Expected headers ""X-Omicron"" to match");
+			run.Should().Throw<Exception>().WithMessage(@"Expected header ""X-Omicron"" to match");
 		}
 
 		private static void SetHeaderAndVerifyIsSet(Action<HttpResponseHeaders> setter, Action<IRequest> verifier)

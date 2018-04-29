@@ -27,7 +27,7 @@ namespace Omicron
 
 				if (values.Except(headerValues).Any())
 				{
-					var message = new StringBuilder($@"Expected headers:");
+					var message = new StringBuilder($@"Expected header:");
 
 					foreach (var expectedHeaderValue in values)
 					{
@@ -67,7 +67,7 @@ namespace Omicron
 
 				if (!predicate(headerValues))
 				{
-					throw new OmicronException($@"Expected headers ""{name}"" to match");
+					throw new OmicronException($@"Expected header ""{name}"" to match");
 				}
 			});
 		}
@@ -249,7 +249,7 @@ namespace Omicron
 
 				if (!predicate(value))
 				{
-					throw new OmicronException($@"Expected headers ""{name}"" to match");
+					throw new OmicronException($@"Expected header ""{name}"" to match");
 				}
 			});
 		}
