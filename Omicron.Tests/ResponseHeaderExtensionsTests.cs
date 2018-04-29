@@ -25,7 +25,7 @@ namespace Omicron.Tests
 		{
 			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", "Omicron"), request => request.Has.Header("Norcimo"));
 
-			run.Should().Throw<Exception>().WithMessage(@"Expected headers ""Norcimo""");
+			run.Should().Throw<Exception>().WithMessage(@"Expected header ""Norcimo""");
 		}
 
 		[Fact]

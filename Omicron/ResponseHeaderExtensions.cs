@@ -15,9 +15,14 @@ namespace Omicron
 		{
 			return @this.Assert(response =>
 			{
+				// Standard headers
 				if (!response.Headers.TryGetValues(name, out var headerValues))
 				{
-					throw new OmicronException($@"Expected header ""{name}""");
+					// Content headers
+					if (!response.Content.Headers.TryGetValues(name, out headerValues))
+					{
+						throw new OmicronException($@"Expected header ""{name}""");
+					}
 				}
 
 				if (values.Except(headerValues).Any())
@@ -45,12 +50,22 @@ namespace Omicron
 		{
 			return @this.Assert(response =>
 			{
-				if (!response.Headers.TryGetValues(name, out var values))
+				// Standard headers
+				if (!response.Headers.TryGetValues(name, out var headerValues))
 				{
-					throw new OmicronException($@"Expected headers ""{name}""");
+					if (response.Content == null)
+					{
+						throw new OmicronException($@"Expected header ""{name}""");
+					}
+
+					// Content headers
+					if (!response.Content.Headers.TryGetValues(name, out headerValues))
+					{
+						throw new OmicronException($@"Expected header ""{name}""");
+					}
 				}
 
-				if (!predicate(values))
+				if (!predicate(headerValues))
 				{
 					throw new OmicronException($@"Expected headers ""{name}"" to match");
 				}
