@@ -11,6 +11,7 @@ namespace Omicron.Tests
 	public sealed class ResponseVersionExtensionTests
 	{
 		[Theory]
+		[InlineData(0, 9)]
 		[InlineData(1, 0)]
 		[InlineData(1, 1)]
 		[InlineData(2, 0)]
@@ -25,6 +26,7 @@ namespace Omicron.Tests
 		}
 
 		[Theory]
+		[InlineData(0, 9)]
 		[InlineData(1, 0)]
 		[InlineData(1, 1)]
 		[InlineData(2, 0)]
