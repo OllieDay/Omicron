@@ -40,6 +40,34 @@ namespace Omicron.Tests
 			run.Should().Throw<Exception>().WithMessage($@"Expected version ""{version}"" but got ""0.0""");
 		}
 
+		[Theory]
+		[InlineData("0.9")]
+		[InlineData("1.0")]
+		[InlineData("1.1")]
+		[InlineData("2.0")]
+		public void ShouldNotThrowExceptionWhenVersionWithVersionStringSucceeds(string version)
+		{
+			var response = CreateResponseWithVersion(new Version(version));
+
+			Action run = () => response.Has.Version(version);
+
+			run.Should().NotThrow();
+		}
+
+		[Theory]
+		[InlineData("0.9")]
+		[InlineData("1.0")]
+		[InlineData("1.1")]
+		[InlineData("2.0")]
+		public void ShouldThrowExceptionWhenVersionWithVersionStringFails(string version)
+		{
+			var response = CreateResponseWithVersion(new Version(0, 0));
+
+			Action run = () => response.Has.Version(version);
+
+			run.Should().Throw<Exception>().WithMessage($@"Expected version ""{version}"" but got ""0.0""");
+		}
+
 		[Fact]
 		public void ShouldNotThrowExceptionWhenVersionWithPredicateSucceeds()
 		{

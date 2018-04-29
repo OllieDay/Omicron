@@ -15,6 +15,9 @@ namespace Omicron
 			});
 		}
 
+		public static IResponse Version(this IResponse @this, string version)
+			=> @this.Version(new Version(version));
+
 		public static IResponse Version(this IResponse @this, Func<Version, bool> predicate)
 		{
 			return @this.Assert(response =>
