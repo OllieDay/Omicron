@@ -1,0 +1,23 @@
+image: microsoft/dotnet:latest
+
+variables:
+  BUILD_CONFIGURATION: Debug
+
+stages:
+  - test
+  - pack
+
+test:
+  stage: test
+  script:
+    - dotnet test Omicron.Tests/
+
+pack:
+  stage: pack
+  variables:
+    PACK_PATH: $BUILD_CONFIGURATION
+  script:
+    - dotnet pack Omicron/ -c $BUILD_CONFIGURATION -o $CI_PROJECT_DIR/$PACK_PATH
+  artifacts:
+    paths:
+      - $PACK_PATH
