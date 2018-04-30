@@ -31,14 +31,14 @@ namespace Omicron
 
 					foreach (var expectedHeaderValue in values)
 					{
-						message.Append($@"\n\t""{name}: {expectedHeaderValue}""");
+						message.Append($@"\n""{name}: {expectedHeaderValue}""");
 					}
 
 					message.Append("\nbut got:");
 
 					foreach (var actualHeaderValue in headerValues)
 					{
-						message.Append($@"\n\t""{name}: {actualHeaderValue}""");
+						message.Append($@"\n""{name}: {actualHeaderValue}""");
 					}
 
 					throw new OmicronException(message.ToString());
