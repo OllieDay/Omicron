@@ -9,61 +9,61 @@ namespace Omicron
 {
 	public static class RequestContentExtensions
 	{
-		public static IRequest Content(this IRequest @this, HttpContent content)
+		public static IRequest Content(this IWith @this, HttpContent content)
 			=> @this.Modify(request => request.Content = content);
 
-		public static IRequest ByteArray(this IRequest @this, byte[] content)
+		public static IRequest ByteArray(this IWith @this, byte[] content)
 			=> @this.Content(new ByteArrayContent(content));
 
-		public static IRequest ByteArray(this IRequest @this, byte[] content, int offset, int count)
+		public static IRequest ByteArray(this IWith @this, byte[] content, int offset, int count)
 			=> @this.Content(new ByteArrayContent(content, offset, count));
 
-		public static IRequest FormUrlEncoded(this IRequest @this, IEnumerable<KeyValuePair<string, string>> nameValueCollection)
+		public static IRequest FormUrlEncoded(this IWith @this, IEnumerable<KeyValuePair<string, string>> nameValueCollection)
 			=> @this.Content(new FormUrlEncodedContent(nameValueCollection));
 
-		public static IRequest String(this IRequest @this, string content)
+		public static IRequest String(this IWith @this, string content)
 			=> @this.Content(new StringContent(content));
 
-		public static IRequest String(this IRequest @this, string content, Encoding encoding)
+		public static IRequest String(this IWith @this, string content, Encoding encoding)
 			=> @this.Content(new StringContent(content, encoding));
 
-		public static IRequest String(this IRequest @this, string content, Encoding encoding, string mediaType)
+		public static IRequest String(this IWith @this, string content, Encoding encoding, string mediaType)
 			=> @this.Content(new StringContent(content, encoding, mediaType));
 
-		public static IRequest Multipart(this IRequest @this, params HttpContent[] values)
+		public static IRequest Multipart(this IWith @this, params HttpContent[] values)
 			=> @this.Multipart(new MultipartContent(), values);
 
-		public static IRequest Multipart(this IRequest @this, string subtype, params HttpContent[] values)
+		public static IRequest Multipart(this IWith @this, string subtype, params HttpContent[] values)
 			=> @this.Multipart(new MultipartContent(subtype), values);
 
-		public static IRequest Multipart(this IRequest @this, string subtype, string boundary, params HttpContent[] values)
+		public static IRequest Multipart(this IWith @this, string subtype, string boundary, params HttpContent[] values)
 			=> @this.Multipart(new MultipartContent(subtype, boundary), values);
 
-		public static IRequest MultipartFormData(this IRequest @this, params HttpContent[] values)
+		public static IRequest MultipartFormData(this IWith @this, params HttpContent[] values)
 			=> @this.MultipartFormData(new MultipartFormDataContent(), values);
 
-		public static IRequest MultipartFormData(this IRequest @this, string boundary, params HttpContent[] values)
+		public static IRequest MultipartFormData(this IWith @this, string boundary, params HttpContent[] values)
 			=> @this.MultipartFormData(new MultipartFormDataContent(boundary), values);
 
-		public static IRequest Stream(this IRequest @this, Stream content)
+		public static IRequest Stream(this IWith @this, Stream content)
 			=> @this.Content(new StreamContent(content));
 
-		public static IRequest Stream(this IRequest @this, Stream content, int bufferSize)
+		public static IRequest Stream(this IWith @this, Stream content, int bufferSize)
 			=> @this.Content(new StreamContent(content, bufferSize));
 
-		public static IRequest Json(this IRequest @this, object content)
+		public static IRequest Json(this IWith @this, object content)
 			=> @this.Json(JsonConvert.SerializeObject(content));
 
-		public static IRequest Json(this IRequest @this, string content)
+		public static IRequest Json(this IWith @this, string content)
 			=> @this.Content(new StringContent(content, Encoding.UTF8, "application/json"));
 
-		public static IRequest Xml(this IRequest @this, XDocument content)
+		public static IRequest Xml(this IWith @this, XDocument content)
 			=> @this.Xml(content.ToString());
 
-		public static IRequest Xml(this IRequest @this, string content)
+		public static IRequest Xml(this IWith @this, string content)
 			=> @this.Content(new StringContent(content, Encoding.UTF8, "application/xml"));
 
-		private static IRequest Multipart(this IRequest @this, MultipartContent content, params HttpContent[] values)
+		private static IRequest Multipart(this IWith @this, MultipartContent content, params HttpContent[] values)
 		{
 			return @this.Modify(request =>
 			{
@@ -76,7 +76,7 @@ namespace Omicron
 			});
 		}
 
-		private static IRequest MultipartFormData(this IRequest @this, MultipartFormDataContent content, params HttpContent[] values)
+		private static IRequest MultipartFormData(this IWith @this, MultipartFormDataContent content, params HttpContent[] values)
 		{
 			return @this.Modify(request =>
 			{

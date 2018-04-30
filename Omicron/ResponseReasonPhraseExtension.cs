@@ -4,7 +4,7 @@ namespace Omicron
 {
 	public static class ResponseReasonPhraseExtensions
 	{
-		public static IResponse ReasonPhrase(this IResponse @this, string reasonPhrase)
+		public static IResponse ReasonPhrase(this IHas @this, string reasonPhrase)
 		{
 			return @this.Assert(response =>
 			{
@@ -15,7 +15,7 @@ namespace Omicron
 			});
 		}
 
-		public static IResponse ReasonPhrase(this IResponse @this, Func<string, bool> predicate)
+		public static IResponse ReasonPhrase(this IHas @this, Func<string, bool> predicate)
 		{
 			return @this.Assert(response =>
 			{

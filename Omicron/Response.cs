@@ -3,7 +3,7 @@ using System.Net.Http;
 
 namespace Omicron
 {
-	internal class Response : IResponse
+	internal class Response : IResponse, IIs, IHas
 	{
 		private readonly HttpResponseMessage _response;
 
@@ -12,8 +12,8 @@ namespace Omicron
 			_response = response;
 		}
 
-		public IResponse Is => this;
-		public IResponse Has => this;
+		public IIs Is => this;
+		public IHas Has => this;
 
 		public IResponse Assert(Action<HttpResponseMessage> assertion)
 		{

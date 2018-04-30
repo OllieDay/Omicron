@@ -5,9 +5,9 @@ namespace Omicron
 {
 	public interface IRequest : IDisposable
 	{
-		IRequest With { get; }
-		IResponse Is { get; }
-		IResponse Has { get; }
+		IWith With { get; }
+		IIs Is { get; }
+		IHas Has { get; }
 
 		IRequest Modify(Action<HttpRequestMessage> modification);
 		IResponse Assert(Action<HttpResponseMessage> assertion);

@@ -12,7 +12,7 @@ namespace Omicron
 {
 	public static class ResponseContentExtensions
 	{
-		public static IResponse Content(this IResponse @this)
+		public static IResponse Content(this IHas @this)
 		{
 			return @this.Assert(response =>
 			{
@@ -23,16 +23,16 @@ namespace Omicron
 			});
 		}
 
-		public static IResponse Content(this IResponse @this, Func<HttpContent, bool> predicate)
+		public static IResponse Content(this IHas @this, Func<HttpContent, bool> predicate)
 			=> @this.AssertContent(content => content, predicate);
 
-		public static IResponse ByteArray(this IResponse @this, byte[] content)
+		public static IResponse ByteArray(this IHas @this, byte[] content)
 			=> @this.ByteArray(responseContent => responseContent.SequenceEqual(content));
 
-		public static IResponse ByteArray(this IResponse @this, Func<byte[], bool> predicate)
+		public static IResponse ByteArray(this IHas @this, Func<byte[], bool> predicate)
 			=> @this.AssertContent(content => content.ReadAsByteArrayAsync().GetAwaiter().GetResult(), predicate);
 
-		public static IResponse String(this IResponse @this, string content)
+		public static IResponse String(this IHas @this, string content)
 		{
 			return @this.Content().Assert(response =>
 			{
@@ -47,10 +47,10 @@ namespace Omicron
 			});
 		}
 
-		public static IResponse String(this IResponse @this, Func<string, bool> predicate)
+		public static IResponse String(this IHas @this, Func<string, bool> predicate)
 			=> @this.AssertContent(content => content.ReadAsStringAsync().GetAwaiter().GetResult(), predicate);
 
-		public static IResponse Json<T>(this IResponse @this, T content)
+		public static IResponse Json<T>(this IHas @this, T content)
 		{
 			return @this.Content().Assert(response =>
 			{
@@ -77,10 +77,10 @@ namespace Omicron
 			});
 		}
 
-		public static IResponse Json(this IResponse @this, string content)
+		public static IResponse Json(this IHas @this, string content)
 			=> @this.String(content);
 
-		public static IResponse Json<T>(this IResponse @this, Func<T, bool> predicate)
+		public static IResponse Json<T>(this IHas @this, Func<T, bool> predicate)
 		{
 			return @this.Assert(response =>
 			{
@@ -104,7 +104,7 @@ namespace Omicron
 			});
 		}
 
-		public static IResponse Xml(this IResponse @this, XDocument content)
+		public static IResponse Xml(this IHas @this, XDocument content)
 		{
 			return @this.Content().Assert(response =>
 			{
@@ -130,10 +130,10 @@ namespace Omicron
 			});
 		}
 
-		public static IResponse Xml(this IResponse @this, string content)
+		public static IResponse Xml(this IHas @this, string content)
 			=> @this.String(content);
 
-		public static IResponse Xml(this IResponse @this, Func<XDocument, bool> predicate)
+		public static IResponse Xml(this IHas @this, Func<XDocument, bool> predicate)
 		{
 			return @this.Content().Assert(response =>
 			{
@@ -157,7 +157,7 @@ namespace Omicron
 			});
 		}
 
-		private static IResponse AssertContent<T>(this IResponse @this, Func<HttpContent, T> selector, Func<T, bool> predicate)
+		private static IResponse AssertContent<T>(this IHas @this, Func<HttpContent, T> selector, Func<T, bool> predicate)
 		{
 			return @this.Content().Assert(response =>
 			{

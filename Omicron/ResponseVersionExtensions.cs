@@ -4,7 +4,7 @@ namespace Omicron
 {
 	public static class ResponseVersionExtensions
 	{
-		public static IResponse Version(this IResponse @this, Version version)
+		public static IResponse Version(this IHas @this, Version version)
 		{
 			return @this.Assert(response =>
 			{
@@ -15,10 +15,10 @@ namespace Omicron
 			});
 		}
 
-		public static IResponse Version(this IResponse @this, string version)
+		public static IResponse Version(this IHas @this, string version)
 			=> @this.Version(new Version(version));
 
-		public static IResponse Version(this IResponse @this, Func<Version, bool> predicate)
+		public static IResponse Version(this IHas @this, Func<Version, bool> predicate)
 		{
 			return @this.Assert(response =>
 			{

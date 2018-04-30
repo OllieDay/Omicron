@@ -4,10 +4,10 @@ namespace Omicron
 {
 	public static class RequestQueryExtensions
 	{
-		public static IRequest Query(this IRequest @this, string name)
+		public static IRequest Query(this IWith @this, string name)
 			=> @this.Modify(request => request.RequestUri = AppendQuery(request.RequestUri, name));
 
-		public static IRequest Query(this IRequest @this, string name, object value)
+		public static IRequest Query(this IWith @this, string name, object value)
 			=> @this.Modify(request => request.RequestUri = AppendQuery(request.RequestUri, $"{name}={value}"));
 
 		private static Uri AppendQuery(Uri uri, string query)

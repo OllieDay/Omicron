@@ -5,8 +5,8 @@ namespace Omicron
 {
 	public interface IResponse : IDisposable
 	{
-		IResponse Is { get; }
-		IResponse Has { get; }
+		IIs Is { get; }
+		IHas Has { get; }
 
 		IResponse Assert(Action<HttpResponseMessage> assertion);
 	}
