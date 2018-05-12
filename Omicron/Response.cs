@@ -12,12 +12,64 @@ namespace Omicron
 			_response = response;
 		}
 
-		public IIs Is => this;
-		public IHas Has => this;
+		public Assertion Assertion { get; set; }
+
+		public IIs Is
+		{
+			get
+			{
+				Assertion = Assertion.Positive;
+
+				return this;
+			}
+		}
+
+		public IHas Has
+		{
+			get
+			{
+				Assertion = Assertion.Positive;
+
+				return this;
+			}
+		}
+
+		IIs IIs.Not => Not;
+		IHas IHas.Not => Not;
+
+		internal Response Not
+		{
+			get
+			{
+				Assertion = Assertion.Negative;
+
+				return this;
+			}
+		}
 
 		public IResponse Assert(Action<HttpResponseMessage> assertion)
 		{
 			assertion(_response);
+
+			return this;
+		}
+
+		public IResponse AssertPositive(Action<HttpResponseMessage> assertion)
+		{
+			if (Assertion == Assertion.Positive)
+			{
+				Assert(assertion);
+			}
+
+			return this;
+		}
+
+		public IResponse AssertNegative(Action<HttpResponseMessage> assertion)
+		{
+			if (Assertion == Assertion.Negative)
+			{
+				Assert(assertion);
+			}
 
 			return this;
 		}

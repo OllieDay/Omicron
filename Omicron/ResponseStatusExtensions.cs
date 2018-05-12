@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http;
 
 namespace Omicron
 {
@@ -6,29 +7,14 @@ namespace Omicron
 	{
 		public static IResponse Status(this IHas @this, int statusCode)
 		{
-			return @this.Assert(response =>
-			{
-				var responseStatusCode = (int)response.StatusCode;
+			@this.AssertPositive(AssertStatusEqual(statusCode));
+			@this.AssertNegative(AssertStatusNotEqual(statusCode));
 
-				if (responseStatusCode != statusCode)
-				{
-					throw new OmicronException($@"Expected status ""{statusCode}"" but got ""{responseStatusCode}""");
-				}
-			});
+			return (IResponse)@this;
 		}
 
 		public static IResponse Status(this IHas @this, Func<int, bool> predicate)
-		{
-			return @this.Assert(response =>
-			{
-				var responseStatusCode = (int)response.StatusCode;
-
-				if (!predicate(responseStatusCode))
-				{
-					throw new OmicronException($@"Expected status ""{responseStatusCode}"" to match");
-				}
-			});
-		}
+			=> @this.Assert(AssertStatusMatches(predicate));
 
 		public static IResponse Continue(this IIs @this)
 			=> @this.Status(100);
@@ -170,5 +156,45 @@ namespace Omicron
 
 		public static IResponse HttpVersionNotSupported(this IIs @this)
 			=> @this.Status(505);
+
+		private static IResponse Status(this IIs @this, int statusCode)
+			=> ((IHas)@this).Status(statusCode);
+
+		private static Action<HttpResponseMessage> AssertStatusEqual(int statusCode)
+		{
+			return response =>
+			{
+				var responseStatusCode = (int)response.StatusCode;
+
+				if (responseStatusCode != statusCode)
+				{
+					throw new OmicronException($@"Expected status ""{statusCode}"" but got ""{responseStatusCode}""");
+				}
+			};
+		}
+
+		private static Action<HttpResponseMessage> AssertStatusNotEqual(int statusCode)
+		{
+			return response =>
+			{
+				if ((int)response.StatusCode == statusCode)
+				{
+					throw new OmicronException($@"Expected status to not be ""{statusCode}""");
+				}
+			};
+		}
+
+		private static Action<HttpResponseMessage> AssertStatusMatches(Func<int, bool> predicate)
+		{
+			return response =>
+			{
+				var responseStatusCode = (int)response.StatusCode;
+
+				if (!predicate(responseStatusCode))
+				{
+					throw new OmicronException($@"Expected status ""{responseStatusCode}"" to match");
+				}
+			};
+		}
 	}
 }

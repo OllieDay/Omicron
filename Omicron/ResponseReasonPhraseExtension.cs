@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http;
 
 namespace Omicron
 {
@@ -6,24 +7,46 @@ namespace Omicron
 	{
 		public static IResponse ReasonPhrase(this IHas @this, string reasonPhrase)
 		{
-			return @this.Assert(response =>
+			@this.AssertPositive(AssertReasonPhraseEqual(reasonPhrase));
+			@this.AssertNegative(AssertReasonPhraseNotEqual(reasonPhrase));
+
+			return (IResponse)@this;
+		}
+
+		public static IResponse ReasonPhrase(this IHas @this, Func<string, bool> predicate)
+			=>@this.Assert(AssertReasonPhraseMatches(predicate));
+
+		private static Action<HttpResponseMessage> AssertReasonPhraseEqual(string reasonPhrase)
+		{
+			return response =>
 			{
 				if (response.ReasonPhrase != reasonPhrase)
 				{
 					throw new OmicronException($@"Expected reason phrase ""{reasonPhrase}"" but got ""{response.ReasonPhrase}""");
 				}
-			});
+			};
 		}
 
-		public static IResponse ReasonPhrase(this IHas @this, Func<string, bool> predicate)
+		private static Action<HttpResponseMessage> AssertReasonPhraseNotEqual(string reasonPhrase)
 		{
-			return @this.Assert(response =>
+			return response =>
+			{
+				if (response.ReasonPhrase == reasonPhrase)
+				{
+					throw new OmicronException($@"Expected reason phrase to not be ""{reasonPhrase}""");
+				}
+			};
+		}
+
+		private static Action<HttpResponseMessage> AssertReasonPhraseMatches(Func<string, bool> predicate)
+		{
+			return response =>
 			{
 				if (!predicate(response.ReasonPhrase))
 				{
 					throw new OmicronException($@"Expected reason phrase ""{response.ReasonPhrase}"" to match");
 				}
-			});
+			};
 		}
 	}
 }

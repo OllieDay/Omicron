@@ -26,7 +26,7 @@ namespace Omicron.Tests
 		[InlineData("1.0")]
 		[InlineData("1.1")]
 		[InlineData("2.0")]
-		public async Task ShouldSetVersionWithStringVersion(string version)
+		public async Task ShouldSetVersionWithString(string version)
 			=> await SetVersionAndVerifyIsSet(request => request.With.Version(version), new Version(version));
 
 		private static async Task SetVersionAndVerifyIsSet(Action<IRequest> setter, Version version)

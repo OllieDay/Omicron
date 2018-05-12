@@ -15,7 +15,7 @@ namespace Omicron.Tests
 		[InlineData(100)]
 		[InlineData(200)]
 		[InlineData(400)]
-		public void ShouldNotThrowExceptionWhenStatusWithStatusCodeSucceeds(int statusCode)
+		public void ShouldNotThrowExceptionWhenStatusWithIntMatches(int statusCode)
 		{
 			var response = CreateResponseWithStatusCode(statusCode);
 
@@ -25,10 +25,23 @@ namespace Omicron.Tests
 		}
 
 		[Theory]
+		[InlineData(100)]
+		[InlineData(200)]
+		[InlineData(400)]
+		public void ShouldNotThrowExceptionWhenNotStatusWithIntDoesNotMatch(int statusCode)
+		{
+			var response = CreateResponseWithStatusCode(statusCode);
+
+			Action run = () => response.Has.Not.Status(0);
+
+			run.Should().NotThrow();
+		}
+
+		[Theory]
 		[InlineData(100, 101)]
 		[InlineData(200, 400)]
 		[InlineData(500, 200)]
-		public void ShouldThrowExceptionWhenStatusWithStatusCodeFails(int expectedStatusCode, int actualStatusCode)
+		public void ShouldThrowExceptionWhenStatusWithIntDoesNotMatch(int expectedStatusCode, int actualStatusCode)
 		{
 			var response = CreateResponseWithStatusCode(actualStatusCode);
 
@@ -40,8 +53,21 @@ namespace Omicron.Tests
 		[Theory]
 		[InlineData(100)]
 		[InlineData(200)]
+		[InlineData(500)]
+		public void ShouldThrowExceptionWhenNotStatusWithIntMatches(int statusCode)
+		{
+			var response = CreateResponseWithStatusCode(statusCode);
+
+			Action run = () => response.Has.Not.Status(statusCode);
+
+			run.Should().Throw<Exception>().WithMessage($@"Expected status to not be ""{statusCode}""");
+		}
+
+		[Theory]
+		[InlineData(100)]
+		[InlineData(200)]
 		[InlineData(400)]
-		public void ShouldNotThrowExceptionWhenStatusWithPredicateSucceeds(int statusCode)
+		public void ShouldNotThrowExceptionWhenStatusWithPredicateMatches(int statusCode)
 		{
 			var response = CreateResponseWithStatusCode(statusCode);
 
@@ -54,7 +80,7 @@ namespace Omicron.Tests
 		[InlineData(100)]
 		[InlineData(200)]
 		[InlineData(400)]
-		public void ShouldThrowExceptionWhenStatusWithPredicateFails(int statusCode)
+		public void ShouldThrowExceptionWhenStatusWithPredicateDoesNotMatch(int statusCode)
 		{
 			var response = CreateResponseWithStatusCode(statusCode);
 

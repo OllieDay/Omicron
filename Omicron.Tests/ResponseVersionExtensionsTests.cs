@@ -15,7 +15,7 @@ namespace Omicron.Tests
 		[InlineData(1, 0)]
 		[InlineData(1, 1)]
 		[InlineData(2, 0)]
-		public void ShouldNotThrowExceptionWhenVersionWithVersionSucceeds(int major, int minor)
+		public void ShouldNotThrowExceptionWhenVersionWithVersionMatches(int major, int minor)
 		{
 			var version = new Version(major, minor);
 			var response = CreateResponseWithVersion(version);
@@ -30,7 +30,22 @@ namespace Omicron.Tests
 		[InlineData(1, 0)]
 		[InlineData(1, 1)]
 		[InlineData(2, 0)]
-		public void ShouldThrowExceptionWhenVersionWithVersionFails(int major, int minor)
+		public void ShouldNotThrowExceptionWhenNotVersionWithVersionDoesNotMatch(int major, int minor)
+		{
+			var version = new Version(major, minor);
+			var response = CreateResponseWithVersion(version);
+
+			Action run = () => response.Has.Not.Version(new Version(0, 0));
+
+			run.Should().NotThrow();
+		}
+
+		[Theory]
+		[InlineData(0, 9)]
+		[InlineData(1, 0)]
+		[InlineData(1, 1)]
+		[InlineData(2, 0)]
+		public void ShouldThrowExceptionWhenVersionWithVersionDoesNotMatch(int major, int minor)
 		{
 			var version = new Version(major, minor);
 			var response = CreateResponseWithVersion(new Version(0, 0));
@@ -41,11 +56,26 @@ namespace Omicron.Tests
 		}
 
 		[Theory]
+		[InlineData(0, 9)]
+		[InlineData(1, 0)]
+		[InlineData(1, 1)]
+		[InlineData(2, 0)]
+		public void ShouldThrowExceptionWhenNotVersionWithVersionMatches(int major, int minor)
+		{
+			var version = new Version(major, minor);
+			var response = CreateResponseWithVersion(version);
+
+			Action run = () => response.Has.Not.Version(version);
+
+			run.Should().Throw<Exception>().WithMessage($@"Expected version to not be ""{version}""");
+		}
+
+		[Theory]
 		[InlineData("0.9")]
 		[InlineData("1.0")]
 		[InlineData("1.1")]
 		[InlineData("2.0")]
-		public void ShouldNotThrowExceptionWhenVersionWithVersionStringSucceeds(string version)
+		public void ShouldNotThrowExceptionWhenVersionWithStringMatches(string version)
 		{
 			var response = CreateResponseWithVersion(new Version(version));
 
@@ -59,7 +89,21 @@ namespace Omicron.Tests
 		[InlineData("1.0")]
 		[InlineData("1.1")]
 		[InlineData("2.0")]
-		public void ShouldThrowExceptionWhenVersionWithVersionStringFails(string version)
+		public void ShouldNotThrowExceptionWhenNotVersionWithStringDoesNotMatch(string version)
+		{
+			var response = CreateResponseWithVersion(new Version(version));
+
+			Action run = () => response.Has.Not.Version("0.0");
+
+			run.Should().NotThrow();
+		}
+
+		[Theory]
+		[InlineData("0.9")]
+		[InlineData("1.0")]
+		[InlineData("1.1")]
+		[InlineData("2.0")]
+		public void ShouldThrowExceptionWhenVersionWithStringDoesNotMatch(string version)
 		{
 			var response = CreateResponseWithVersion(new Version(0, 0));
 
@@ -68,8 +112,22 @@ namespace Omicron.Tests
 			run.Should().Throw<Exception>().WithMessage($@"Expected version ""{version}"" but got ""0.0""");
 		}
 
+		[Theory]
+		[InlineData("0.9")]
+		[InlineData("1.0")]
+		[InlineData("1.1")]
+		[InlineData("2.0")]
+		public void ShouldThrowExceptionWhenNotVersionWithStringMatches(string version)
+		{
+			var response = CreateResponseWithVersion(new Version(version));
+
+			Action run = () => response.Has.Not.Version(version);
+
+			run.Should().Throw<Exception>().WithMessage($@"Expected version to not be ""{version}""");
+		}
+
 		[Fact]
-		public void ShouldNotThrowExceptionWhenVersionWithPredicateSucceeds()
+		public void ShouldNotThrowExceptionWhenVersionWithPredicateMatches()
 		{
 			var response = CreateResponseWithVersion(new Version(1, 0));
 
@@ -79,10 +137,10 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public void ShouldThrowExceptionWhenVersionWithPredicateFails()
+		public void ShouldThrowExceptionWhenVersionWithPredicateDoesNotMatch()
 		{
 			var version = new Version(1, 0);
-			var response = CreateResponseWithVersion(new Version(1, 0));
+			var response = CreateResponseWithVersion(version);
 
 			Action run = () => response.Has.Version(_ => false);
 

@@ -11,7 +11,7 @@ namespace Omicron.Tests
 	public sealed class ResponseContentExtensionTests
 	{
 		[Fact]
-		public void ShouldNotThrowExceptionWhenContentIsSet()
+		public void ShouldNotThrowExceptionWhenContentExists()
 		{
 			var request = CreateResponseWithContent(new StringContent(string.Empty));
 
@@ -21,17 +21,37 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public void ShouldThrowExceptionWhenContentIsNotSet()
+		public void ShouldNotThrowExceptionWhenNotContentDoesNotExist()
+		{
+			var request = CreateResponseWithContent(null);
+
+			Action run = () => request.Has.Not.Content();
+
+			run.Should().NotThrow();
+		}
+
+		[Fact]
+		public void ShouldThrowExceptionWhenContentDoesNotExist()
 		{
 			var request = CreateResponseWithContent(null);
 
 			Action run = () => request.Has.Content();
 
-			run.Should().Throw<Exception>().WithMessage("Expected content but got nothing");
+			run.Should().Throw<Exception>().WithMessage("Expected content to exist");
 		}
 
 		[Fact]
-		public void ShouldNotThrowExceptionWhenContetWithPredicateSucceeds()
+		public void ShouldThrowExceptionWhenNotContentExists()
+		{
+			var request = CreateResponseWithContent(new StringContent("..."));
+
+			Action run = () => request.Has.Not.Content();
+
+			run.Should().Throw<Exception>().WithMessage("Expected content to not exist");
+		}
+
+		[Fact]
+		public void ShouldNotThrowExceptionWhenContetWithPredicateMatches()
 		{
 			var request = CreateResponseWithContent(new StringContent(string.Empty));
 
@@ -41,7 +61,7 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public void ShouldThrowExceptionWhenContentWithPredicateFails()
+		public void ShouldThrowExceptionWhenContentWithPredicateDoesNotMatch()
 		{
 			var request = CreateResponseWithContent(new StringContent(string.Empty));
 
@@ -51,7 +71,7 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public void ShouldNotThrowExceptionWhenByteArrayWithByteArrayIsSet()
+		public void ShouldNotThrowExceptionWhenByteArrayWithByteArrayMatches()
 		{
 			var content = new byte[] { 1, 2, 3 };
 			var request = CreateResponseWithContent(new ByteArrayContent(content));
@@ -62,7 +82,17 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public void ShouldThrowExceptionWhenByteArrayWithByteArrayIsNotSet()
+		public void ShouldNotThrowExceptionWhenNotByteArrayWithByteArrayDoesNotMatch()
+		{
+			var request = CreateResponseWithContent(new ByteArrayContent(new byte[0]));
+
+			Action run = () => request.Has.Not.ByteArray(new byte[] { 1, 2, 3 });
+
+			run.Should().NotThrow();
+		}
+
+		[Fact]
+		public void ShouldThrowExceptionWhenByteArrayWithByteArrayDoesNotMatch()
 		{
 			var request = CreateResponseWithContent(new ByteArrayContent(new byte[0]));
 
@@ -72,7 +102,18 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public void ShouldNotThrowExceptionWhenByteArrayWithPredicateSucceeds()
+		public void ShouldThrowExceptionWhenNotByteArrayWithByteArrayMatches()
+		{
+			var content = new byte[] { 1, 2, 3 };
+			var request = CreateResponseWithContent(new ByteArrayContent(content));
+
+			Action run = () => request.Has.Not.ByteArray(content);
+
+			run.Should().Throw<Exception>().WithMessage("Expected content to not match");
+		}
+
+		[Fact]
+		public void ShouldNotThrowExceptionWhenByteArrayWithPredicateMatches()
 		{
 			var request = CreateResponseWithContent(new ByteArrayContent(new byte[0]));
 
@@ -82,7 +123,7 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public void ShouldThrowExceptionWhenByteArrayWithPredicateFails()
+		public void ShouldThrowExceptionWhenByteArrayWithPredicateDoesNotMatch()
 		{
 			var request = CreateResponseWithContent(new ByteArrayContent(new byte[0]));
 
@@ -92,7 +133,7 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public void ShouldNotThrowExceptionWhenStringWithStringIsSet()
+		public void ShouldNotThrowExceptionWhenStringWithStringMatches()
 		{
 			const string content = "Omicron";
 
@@ -104,7 +145,17 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public void ShouldThrowExceptionWhenStringWithStringIsNotSet()
+		public void ShouldNotThrowExceptionWhenNotStringWithStringDoesNotMatch()
+		{
+			var request = CreateResponseWithContent(new StringContent(string.Empty));
+
+			Action run = () => request.Has.Not.String("Omicron");
+
+			run.Should().NotThrow();
+		}
+
+		[Fact]
+		public void ShouldThrowExceptionWhenStringWithStringDoesNotMatch()
 		{
 			var request = CreateResponseWithContent(new StringContent("Omicron"));
 
@@ -114,7 +165,17 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public void ShouldNotThrowExceptionWhenStringWithPredicateSucceeds()
+		public void ShouldThrowExceptionWhenNotStringWithStringMatches()
+		{
+			var request = CreateResponseWithContent(new StringContent("Omicron"));
+
+			Action run = () => request.Has.Not.String("Omicron");
+
+			run.Should().Throw<Exception>().WithMessage(@"Expected content to not be ""Omicron""");
+		}
+
+		[Fact]
+		public void ShouldNotThrowExceptionWhenStringWithPredicateDoesNotMatch()
 		{
 			var request = CreateResponseWithContent(new StringContent(string.Empty));
 
@@ -124,7 +185,7 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public void ShouldThrowExceptionWhenStringWithPredicateFails()
+		public void ShouldThrowExceptionWhenStringWithPredicateDoesNotMatch()
 		{
 			var request = CreateResponseWithContent(new StringContent(string.Empty));
 
@@ -134,7 +195,7 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public void ShouldNotThrowExceptionWhenJsonWithObjectIsSet()
+		public void ShouldNotThrowExceptionWhenJsonWithObjectMatches()
 		{
 			var request = CreateResponseWithContent(new StringContent(@"{""name"":""Omicron""}"));
 
@@ -147,7 +208,20 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public void ShouldThrowExceptionWhenJsonWithObjectIsNotSet()
+		public void ShouldNotThrowExceptionWhenNotJsonWithObjectDoesNotMatch()
+		{
+			var request = CreateResponseWithContent(new StringContent(@"{""name"":""Omicron""}"));
+
+			Action run = () => request.Has.Not.Json(new
+			{
+				Name = "Norcimo"
+			});
+
+			run.Should().NotThrow();
+		}
+
+		[Fact]
+		public void ShouldThrowExceptionWhenJsonWithObjectDoesNotMatch()
 		{
 			var request = CreateResponseWithContent(new StringContent(@"{""name"":""Omicron""}"));
 
@@ -160,7 +234,20 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public void ShouldNotThrowExceptionWhenJsonWithStringIsSet()
+		public void ShouldThrowExceptionWhenNotJsonWithObjectMatches()
+		{
+			var request = CreateResponseWithContent(new StringContent(@"{""name"":""Omicron""}"));
+
+			Action run = () => request.Has.Not.Json(new
+			{
+				Name = "Omicron"
+			});
+
+			run.Should().Throw<Exception>().WithMessage(@"Expected content to not be ""{ Name = Omicron }""");
+		}
+
+		[Fact]
+		public void ShouldNotThrowExceptionWhenJsonWithStringMatches()
 		{
 			const string json = @"{""name"":""Omicron""}";
 
@@ -172,7 +259,17 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public void ShouldThrowExceptionWhenJsonWithStringIsNotSet()
+		public void ShouldNotThrowExceptionWhenNotJsonWithStringDoesNotMatch()
+		{
+			var request = CreateResponseWithContent(new StringContent(@"{""name"":""Omicron""}"));
+
+			Action run = () => request.Has.Not.Json(@"{""name"":""Norcimo""}");
+
+			run.Should().NotThrow();
+		}
+
+		[Fact]
+		public void ShouldThrowExceptionWhenJsonWithStringDoesNotMatch()
 		{
 			var request = CreateResponseWithContent(new StringContent(@"{""name"":""Omicron""}"));
 
@@ -182,7 +279,19 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public void ShouldNotThrowExceptionWhenJsonWithPredicateSucceeds()
+		public void ShouldThrowExceptionWhenNotJsonWithStringMatches()
+		{
+			const string content = @"{""name"":""Omicron""}";
+
+			var request = CreateResponseWithContent(new StringContent(content));
+
+			Action run = () => request.Has.Not.Json(content);
+
+			run.Should().Throw<Exception>().WithMessage(@"Expected content to not be ""{""name"":""Omicron""}""");
+		}
+
+		[Fact]
+		public void ShouldNotThrowExceptionWhenJsonWithPredicateMatches()
 		{
 			var request = CreateResponseWithContent(new StringContent(@"{""name"":""Omicron""}"));
 
@@ -192,7 +301,7 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public void ShouldThrowExceptionWhenJsonWithPredicateFails()
+		public void ShouldThrowExceptionWhenJsonWithPredicateDoesNotMatch()
 		{
 			var request = CreateResponseWithContent(new StringContent(@"{""name"":""Omicron""}"));
 
@@ -202,7 +311,7 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public void ShouldNotThrowExceptionWhenXmlWithXDocumentIsSet()
+		public void ShouldNotThrowExceptionWhenXmlWithXDocumentMatches()
 		{
 			var request = CreateResponseWithContent(new StringContent("<Omicron />"));
 
@@ -212,7 +321,17 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public void ShouldThrowExceptionWhenXmlWithXDocumentIsNotSet()
+		public void ShouldNotThrowExceptionWhenNotXmlWithXDocumentDoesNotMatch()
+		{
+			var request = CreateResponseWithContent(new StringContent("<Omicron />"));
+
+			Action run = () => request.Has.Not.Xml(new XDocument(new XElement("Norcimo")));
+
+			run.Should().NotThrow();
+		}
+
+		[Fact]
+		public void ShouldThrowExceptionWhenXmlWithXDocumentDoesNotMatch()
 		{
 			var request = CreateResponseWithContent(new StringContent("<Omicron />"));
 
@@ -222,7 +341,17 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public void ShouldNotThrowExceptionWhenXmlWithStringIsSet()
+		public void ShouldThrowExceptionWhenNotXmlWithXDocumentMatches()
+		{
+			var request = CreateResponseWithContent(new StringContent("<Omicron />"));
+
+			Action run = () => request.Has.Not.Xml(new XDocument(new XElement("Omicron")));
+
+			run.Should().Throw<Exception>().WithMessage(@"Expected content to not be ""<Omicron />""");
+		}
+
+		[Fact]
+		public void ShouldNotThrowExceptionWhenXmlWithStringMatches()
 		{
 			const string content = "<Omicron />";
 
@@ -234,7 +363,17 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public void ShouldThrowExceptionWhenXmlWithStringIsNotSet()
+		public void ShouldNotThrowExceptionWhenNotXmlWithStringDoesNotMatch()
+		{
+			var request = CreateResponseWithContent(new StringContent("<Omicron />"));
+
+			Action run = () => request.Has.Not.Xml("<Norcimo />");
+
+			run.Should().NotThrow();
+		}
+
+		[Fact]
+		public void ShouldThrowExceptionWhenXmlWithStringDoesNotMatch()
 		{
 			var request = CreateResponseWithContent(new StringContent("<Omicron />"));
 
@@ -244,7 +383,17 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public void ShouldNotThrowExceptionWhenXmlWithPredicateSucceeds()
+		public void ShouldThrowExceptionWhenNotXmlWithStringMatches()
+		{
+			var request = CreateResponseWithContent(new StringContent("<Omicron />"));
+
+			Action run = () => request.Has.Not.Xml("<Omicron />");
+
+			run.Should().Throw<Exception>().WithMessage(@"Expected content to not be ""<Omicron />""");
+		}
+
+		[Fact]
+		public void ShouldNotThrowExceptionWhenXmlWithPredicateMatches()
 		{
 			var request = CreateResponseWithContent(new StringContent("<Omicron />"));
 
@@ -254,7 +403,7 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public void ShouldThrowExceptionWhenXmlWithPredicateFails()
+		public void ShouldThrowExceptionWhenXmlWithPredicateDoesNotMatch()
 		{
 			var request = CreateResponseWithContent(new StringContent("<Omicron />"));
 

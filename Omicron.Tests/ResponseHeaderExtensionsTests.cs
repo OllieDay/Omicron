@@ -13,7 +13,7 @@ namespace Omicron.Tests
 	public sealed class ResponseHeaderExtensionTests
 	{
 		[Fact]
-		public void ShouldNotThrowExceptionWhenHeaderWithNameIsSet()
+		public void ShouldNotThrowExceptionWhenHeaderWithNameExists()
 		{
 			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", "Omicron"), request => request.Has.Header("X-Omicron"));
 
@@ -21,15 +21,31 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public void ShouldThrowExceptionWhenHeaderWithNameIsNotSet()
+		public void ShouldNotThrowExceptionWhenNotHeaderWithNameDoesNotExist()
 		{
-			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", "Omicron"), request => request.Has.Header("Norcimo"));
+			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", "Omicron"), request => request.Has.Not.Header("X-Norcimo"));
 
-			run.Should().Throw<Exception>().WithMessage(@"Expected header ""Norcimo""");
+			run.Should().NotThrow();
 		}
 
 		[Fact]
-		public void ShouldNotThrowExceptionWhenHeaderWithNameAndValueIsSet()
+		public void ShouldThrowExceptionWhenHeaderWithNameDoesNotExist()
+		{
+			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", "Omicron"), request => request.Has.Header("X-Norcimo"));
+
+			run.Should().Throw<Exception>().WithMessage(@"Expected header ""X-Norcimo"" to exist");
+		}
+
+		[Fact]
+		public void ShouldThrowExceptionWhenNotHeaderWithNameExists()
+		{
+			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", "Omicron"), request => request.Has.Not.Header("X-Omicron"));
+
+			run.Should().Throw<Exception>().WithMessage(@"Expected header ""X-Omicron"" to not exist");
+		}
+
+		[Fact]
+		public void ShouldNotThrowExceptionWhenHeaderWithNameAndValueExists()
 		{
 			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", "Omicron"), request => request.Has.Header("X-Omicron", "Omicron"));
 
@@ -37,7 +53,15 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public void ShouldThrowExceptionWhenHeaderWithNameAndValueIsNotSet()
+		public void ShouldNotThrowExceptionWhenNotHeaderWithNameAndValueDoesNotExist()
+		{
+			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", "Omicron"), request => request.Has.Not.Header("X-Omicron", "Norcimo"));
+
+			run.Should().NotThrow();
+		}
+
+		[Fact]
+		public void ShouldThrowExceptionWhenHeaderWithNameAndValueDoesNotExist()
 		{
 			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", "Omicron"), request => request.Has.Header("X-Omicron", "Norcimo"));
 
@@ -45,27 +69,15 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public void ShouldNotThrowExceptionWhenHeadersWithNameAndValuesIsSet()
+		public void ShouldThrowExceptionWhenNotHeaderWithNameAndValueExists()
 		{
-			var values = new[] { "Omicron 1", "Omicron 2" };
-
-			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", values), request => request.Has.Header("X-Omicron", values.First(), values.Last()));
-
-			run.Should().NotThrow();
-		}
-
-		[Fact]
-		public void ShouldThrowExceptionWhenHeadersWithNameAndValuesIsNotSet()
-		{
-			var values = new[] { "Omicron 1", "Omicron 2" };
-
-			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", values), request => request.Has.Header("X-Omicron", values.First(), "Norcimo"));
+			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", "Omicron"), request => request.Has.Not.Header("X-Omicron", "Omicron"));
 
 			run.Should().Throw<Exception>();
 		}
 
 		[Fact]
-		public void ShouldNotThrowExceptionWhenHeaderWithPredicateIsSet()
+		public void ShouldNotThrowExceptionWhenHeaderWithPredicateMatches()
 		{
 			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", "Omicron"), request => request.Has.Header("X-Omicron", _ => true));
 
@@ -73,7 +85,7 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public void ShouldThrowExceptionWhenHeaderWithPredicateIsNotSet()
+		public void ShouldThrowExceptionWhenHeaderWithPredicateDoesNotMatch()
 		{
 			Action run = () => SetHeaderAndVerifyIsSet(headers => headers.Add("X-Omicron", "Omicron"), request => request.Has.Header("X-Omicron", _ => false));
 

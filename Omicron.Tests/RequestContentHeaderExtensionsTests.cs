@@ -13,12 +13,15 @@ namespace Omicron.Tests
 {
 	public sealed class RequestContentHeaderExtensionsTests
 	{
-		[Fact]
-		public async Task ShouldAddContentLengthHeaderWithValue()
-			=> await SetContentHeaderAndVerifyIsSet(request => request.With.ContentLength(0), "Content-Length", "0");
+		[Theory]
+		[InlineData(0)]
+		[InlineData(1)]
+		[InlineData(100)]
+		public async Task ShouldAddContentLengthHeader(long contentLength)
+			=> await SetContentHeaderAndVerifyIsSet(request => request.With.ContentLength(contentLength), "Content-Length", $"{contentLength}");
 
 		[Fact]
-		public async Task ShouldAddContentMD5HeaderWithValue()
+		public async Task ShouldAddContentMD5Header()
 		{
 			byte[] hash;
 
@@ -38,7 +41,7 @@ namespace Omicron.Tests
 		public async Task ShouldAddContentTypeHeaderWithMediaType()
 			=> await SetContentHeaderAndVerifyIsSet(request => request.With.ContentType("application/json"), "Content-Type", "application/json");
 
-		private static async Task SetContentHeaderAndVerifyIsSet(Action<IRequest> setter, string name, params string[] expectedValues)
+		private static async Task SetContentHeaderAndVerifyIsSet(Action<IRequest> setter, string name, string value)
 		{
 			var httpService = Substitute.For<IHttpService>();
 			var request = new Request(httpService, HttpMethod.Head, string.Empty);
@@ -49,18 +52,18 @@ namespace Omicron.Tests
 			request.Assert(Stubs.Noop);
 
 			await httpService.Received().SendAsync(Arg.Is<HttpRequestMessage>(httpRequestMessage =>
-				IsContentHeaderSet(httpRequestMessage.Content.Headers, name, expectedValues)
+				IsContentHeaderSet(httpRequestMessage.Content.Headers, name, value)
 			));
 		}
 
-		private static bool IsContentHeaderSet(HttpContentHeaders headers, string name, params string[] expectedValues)
+		private static bool IsContentHeaderSet(HttpContentHeaders headers, string name, string value)
 		{
 			if (!headers.TryGetValues(name, out var actualValues))
 			{
 				return false;
 			}
 
-			return actualValues.SequenceEqual(expectedValues);
+			return actualValues.Contains(value);
 		}
 	}
 }

@@ -11,19 +11,19 @@ namespace Omicron.Tests
 	{
 		[Fact]
 		public async Task ShouldAddQueryWithNameAsFirstQuery()
-			=> await SetQueryAndVerifyIsSet(request => request.With.Query("first"), "https://example.com", "https://example.com/?first");
+			=> await SetQueryAndVerifyIsSet(request => request.With.Query("first"), "https://example.com/", "https://example.com/?first");
 
 		[Fact]
 		public async Task ShouldAddQueryWithNameAndValueAsFirstQuery()
-			=> await SetQueryAndVerifyIsSet(request => request.With.Query("first", "first"), "https://example.com", "https://example.com/?first=first");
+			=> await SetQueryAndVerifyIsSet(request => request.With.Query("first", "first"), "https://example.com/", "https://example.com/?first=first");
 
 		[Fact]
 		public async Task ShouldAddQueryWithNameAsSecondQuery()
-			=> await SetQueryAndVerifyIsSet(request => request.With.Query("second"), "https://example.com?first", "https://example.com/?first&second");
+			=> await SetQueryAndVerifyIsSet(request => request.With.Query("second"), "https://example.com/?first", "https://example.com/?first&second");
 
 		[Fact]
 		public async Task ShouldAddQueryWithNameAndValueAsSecondQuery()
-			=> await SetQueryAndVerifyIsSet(request => request.With.Query("second", "second"), "https://example.com?first=first", "https://example.com/?first=first&second=second");
+			=> await SetQueryAndVerifyIsSet(request => request.With.Query("second", "second"), "https://example.com/?first=first", "https://example.com/?first=first&second=second");
 
 		private static async Task SetQueryAndVerifyIsSet(Action<IRequest> setter, string baseUri, string absoluteUri)
 		{

@@ -16,11 +16,11 @@ namespace Omicron.Tests
 	public sealed class RequestContentExtensionTests
 	{
 		[Fact]
-		public async Task ShouldSetContentToHttpContentWithContent()
+		public async Task ShouldSetContent()
 			=> await SetContentAndVerifyIsSet(request => request.With.Content(new StringContent("...")), "...");
 
 		[Fact]
-		public async Task ShouldSetContentToByteArrayContentWithContent()
+		public async Task ShouldSetContentToByteArrayContent()
 		{
 			var content = new byte[] { 1, 2, 3 };
 
@@ -28,7 +28,7 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public async Task ShouldSetContentToByteArrayContentWithContentAndOffsetAndCount()
+		public async Task ShouldSetContentToByteArrayContentWithOffsetAndCount()
 		{
 			var offset = 1;
 			var count = 1;
@@ -40,7 +40,7 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public async Task ShouldSetContentToFormUrlEncodedContentWithContent()
+		public async Task ShouldSetContentToFormUrlEncodedContent()
 		{
 			var content = new Dictionary<string, string>
 			{
@@ -51,35 +51,35 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public async Task ShouldSetContentTypeHeaderToXWwwFormUrlEncodedWhenContentIsFormUrlEncodedContentWithContent()
+		public async Task ShouldSetContentTypeHeaderToXWwwFormUrlEncodedContentWhenContentIsFormUrlEncodedContent()
 			=> await SetContentAndVerifyContentTypeHeaderIsSet(request => request.With.FormUrlEncoded(new Dictionary<string, string>()), "application/x-www-form-urlencoded");
 
 		[Fact]
-		public async Task ShouldSetContentToStringContentWithContent()
+		public async Task ShouldSetContentToStringContent()
 			=> await SetContentAndVerifyIsSet(request => request.With.String("..."), "...");
 
 		[Fact]
-		public async Task ShouldSetContentTypeHeaderToTextPlainWhenContentIsStringContentWithContent()
+		public async Task ShouldSetContentTypeHeaderToTextPlainWhenContentIsStringContent()
 			=> await SetContentAndVerifyContentTypeHeaderIsSet(request => request.With.String("..."), "text/plain; charset=utf-8");
 
 		[Fact]
-		public async Task ShouldSetContentToStringContentWithContentAndEncoding()
+		public async Task ShouldSetContentToStringContentWithEncoding()
 			=> await SetContentAndVerifyIsSet(request => request.With.String("...", Encoding.ASCII), "...");
 
 		[Fact]
-		public async Task ShouldSetContentTypeHeaderToTextPlainWhenContentIsStringContentWithContentAndEncoding()
+		public async Task ShouldSetContentTypeHeaderToTextPlainWhenContentIsStringContentWithEncoding()
 			=> await SetContentAndVerifyContentTypeHeaderIsSet(request => request.With.String("...", Encoding.ASCII), "text/plain; charset=us-ascii");
 
 		[Fact]
-		public async Task ShouldSetContentToStringContentWithContentAndEncodingAndMediaType()
+		public async Task ShouldSetContentToStringContentWithEncodingAndMediaType()
 			=> await SetContentAndVerifyIsSet(request => request.With.String("...", Encoding.ASCII, "text/plain"), "...");
 
 		[Fact]
-		public async Task ShouldSetContentTypeHeaderToTextPlainWhenContentIsStringContentWithContentAndEncodingAndMediaType()
+		public async Task ShouldSetContentTypeHeaderToTextPlainWhenContentIsStringContentWithEncodingAndMediaType()
 			=> await SetContentAndVerifyContentTypeHeaderIsSet(request => request.With.String("...", Encoding.ASCII, "text/plain"), "text/plain; charset=us-ascii");
 
 		[Fact]
-		public async Task ShouldSetContentToStreamContentWithContent()
+		public async Task ShouldSetContentToStreamContent()
 		{
 			var content = new MemoryStream(new byte[] { 1, 2, 3 });
 
@@ -87,7 +87,7 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public async Task ShouldSetContentToStreamContentWithContentAndBufferSize()
+		public async Task ShouldSetContentToStreamContentWithBufferSize()
 		{
 			var content = new MemoryStream(new byte[] { 1, 2, 3 });
 
@@ -95,7 +95,7 @@ namespace Omicron.Tests
 		}
 
 		[Fact]
-		public async Task ShouldSetContentToJsonObjectWithContent()
+		public async Task ShouldSetContentToJsonObject()
 			=> await SetContentAndVerifyIsSet(request => request.With.Json(new {}), "{}");
 
 		[Fact]
@@ -103,7 +103,7 @@ namespace Omicron.Tests
 			=> await SetContentAndVerifyContentTypeHeaderIsSet(request => request.With.Json(new {}), "application/json; charset=utf-8");
 
 		[Fact]
-		public async Task ShouldSetContentToJsonStringWithContent()
+		public async Task ShouldSetContentToJsonString()
 			=> await SetContentAndVerifyIsSet(request => request.With.Json("{}"), "{}");
 
 		[Fact]
@@ -111,7 +111,7 @@ namespace Omicron.Tests
 			=> await SetContentAndVerifyContentTypeHeaderIsSet(request => request.With.Json("{}"), "application/json; charset=utf-8");
 
 		[Fact]
-		public async Task ShouldSetContentToXmlObjectWithContent()
+		public async Task ShouldSetContentToXmlObject()
 			=> await SetContentAndVerifyIsSet(request => request.With.Xml(new XDocument(new XElement("root"))), "<root />");
 
 		[Fact]
@@ -119,7 +119,7 @@ namespace Omicron.Tests
 			=> await SetContentAndVerifyContentTypeHeaderIsSet(request => request.With.Xml(new XDocument(new XElement("root"))), "application/xml; charset=utf-8");
 
 		[Fact]
-		public async Task ShouldSetContentToXmlStringWithContent()
+		public async Task ShouldSetContentToXmlString()
 			=> await SetContentAndVerifyIsSet(request => request.With.Xml("<root />"), "<root />");
 
 		[Fact]

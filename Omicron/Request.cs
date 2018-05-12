@@ -31,6 +31,12 @@ namespace Omicron
 		public IResponse Assert(Action<HttpResponseMessage> assertion)
 			=> SendRequest().Assert(assertion);
 
+		public IResponse AssertPositive(Action<HttpResponseMessage> assertion)
+			=> SendRequest().AssertPositive(assertion);
+
+		public IResponse AssertNegative(Action<HttpResponseMessage> assertion)
+			=> SendRequest().AssertNegative(assertion);
+
 		public void Dispose()
 		{
 			_request.Dispose();
