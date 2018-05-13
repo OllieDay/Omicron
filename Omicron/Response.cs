@@ -13,39 +13,10 @@ namespace Omicron
 		}
 
 		public Assertion Assertion { get; set; }
-
-		public IIs Is
-		{
-			get
-			{
-				Assertion = Assertion.Positive;
-
-				return this;
-			}
-		}
-
-		public IHas Has
-		{
-			get
-			{
-				Assertion = Assertion.Positive;
-
-				return this;
-			}
-		}
-
-		IIs IIs.Not => Not;
-		IHas IHas.Not => Not;
-
-		private Response Not
-		{
-			get
-			{
-				Assertion = Assertion.Negative;
-
-				return this;
-			}
-		}
+		public IIs Is => SetAssertion(Assertion.Positive);
+		public IHas Has => SetAssertion(Assertion.Positive);
+		IIs IIs.Not => SetAssertion(Assertion.Negative);
+		IHas IHas.Not => SetAssertion(Assertion.Negative);
 
 		public IResponse Assert(Action<HttpResponseMessage> assertion)
 		{
@@ -77,6 +48,13 @@ namespace Omicron
 		public void Dispose()
 		{
 			_response.Dispose();
+		}
+
+		private Response SetAssertion(Assertion assertion)
+		{
+			Assertion = assertion;
+
+			return this;
 		}
 	}
 }
