@@ -3,12 +3,8 @@ using System.Net.Http;
 
 namespace Omicron
 {
-	public interface IHas
+	public interface IHas : IAsserter
 	{
 		IHas Not { get; }
-
-		IResponse Assert(Action<HttpResponseMessage> assertion);
-		IResponse AssertPositive(Action<HttpResponseMessage> assertion);
-		IResponse AssertNegative(Action<HttpResponseMessage> assertion);
 	}
 }

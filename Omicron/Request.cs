@@ -5,7 +5,7 @@ using MockableHttp;
 
 namespace Omicron
 {
-	internal class Request : IRequest, IWith
+	internal class Request : IRequest
 	{
 		private readonly IHttpService _httpService;
 		private readonly HttpRequestMessage _request;
