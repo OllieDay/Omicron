@@ -11,8 +11,8 @@ namespace Omicron
 		/// <summary>
 		/// Adds the specified modification to the request.
 		/// </summary>
-		/// <param name="modification">An <see cref="Action{HttpRequestMessage}"/> used to modify the underlying <see cref="HttpRequestMessage"/> request.</param>
-		/// <returns>An <see cref="IRequest"/> object that represents the request.
+		/// <param name="modification">The action used to modify the underlying <see cref="HttpRequestMessage"/> request.</param>
+		/// <returns>An <see cref="IRequest"/> object that represents the request.</returns>
 		IRequest Modify(Action<HttpRequestMessage> modification);
 	}
 }
