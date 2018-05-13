@@ -37,7 +37,7 @@ namespace Omicron
 		IIs IIs.Not => Not;
 		IHas IHas.Not => Not;
 
-		internal Response Not
+		private Response Not
 		{
 			get
 			{
