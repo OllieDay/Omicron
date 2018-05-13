@@ -3,7 +3,7 @@ using MockableHttp;
 
 namespace Omicron
 {
-	public sealed class Omicron
+	public static class Omicron
 	{
 		private static readonly IHttpService HttpService = new HttpService();
 
