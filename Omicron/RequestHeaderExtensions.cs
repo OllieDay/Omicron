@@ -130,7 +130,7 @@ namespace Omicron
 			=> @this.Pragma(new NameValueHeaderValue(name));
 
 		public static IRequest ProxyAuthorization(this IWith @this, AuthenticationHeaderValue value)
-			=> @this.Modify(request => request.Headers.Authorization = value);
+			=> @this.Modify(request => request.Headers.ProxyAuthorization = value);
 
 		public static IRequest ProxyAuthorization(this IWith @this, string scheme)
 			=> @this.ProxyAuthorization(new AuthenticationHeaderValue(scheme));

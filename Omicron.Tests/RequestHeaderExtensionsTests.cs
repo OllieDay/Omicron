@@ -226,15 +226,15 @@ namespace Omicron.Tests
 
 		[Fact]
 		public async Task ShouldAddProxyAuthorizationHeaderWithAuthenticationHeaderValue()
-			=> await SetHeaderAndVerifyIsSet(request => request.With.ProxyAuthorization(new AuthenticationHeaderValue("...")), "Authorization", "...");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.ProxyAuthorization(new AuthenticationHeaderValue("...")), "Proxy-Authorization", "...");
 
 		[Fact]
 		public async Task ShouldAddProxyAuthorizationHeaderWithScheme()
-			=> await SetHeaderAndVerifyIsSet(request => request.With.ProxyAuthorization("..."), "Authorization", "...");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.ProxyAuthorization("..."), "Proxy-Authorization", "...");
 
 		[Fact]
 		public async Task ShouldAddProxyAuthorizationHeaderWithSchemeAndParameter()
-			=> await SetHeaderAndVerifyIsSet(request => request.With.ProxyAuthorization("Basic", "..."), "Authorization", "Basic ...");
+			=> await SetHeaderAndVerifyIsSet(request => request.With.ProxyAuthorization("Basic", "..."), "Proxy-Authorization", "Basic ...");
 
 		[Fact]
 		public async Task ShouldAddRangeHeaderWithRangeHeaderValue()
