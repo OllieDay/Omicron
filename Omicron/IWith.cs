@@ -4,7 +4,7 @@ using System.Net.Http;
 namespace Omicron
 {
 	/// <summary>
-	/// Represents an object that supports modifications.
+	/// Represents an object used to add modifications to the request.
 	/// </summary>
 	public interface IWith
 	{

@@ -4,7 +4,7 @@ using System.Net.Http;
 namespace Omicron
 {
 	/// <summary>
-	/// Represents an HTTP request that supports modifications and assertions.
+	/// Represents an object used to add modifications and assertions.
 	/// </summary>
 	public interface IRequest : IWith, IAsserter, IDisposable
 	{

@@ -4,7 +4,7 @@ using System.Net.Http;
 namespace Omicron
 {
 	/// <summary>
-	/// Represents an object that supports adding assertions.
+	/// Represents an object used to add assertions to the response.
 	/// </summary>
 	public interface IIs : IAsserter
 	{
