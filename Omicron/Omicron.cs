@@ -1,4 +1,7 @@
+using System;
+using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 using MockableHttp;
 
 namespace Omicron
@@ -9,6 +12,28 @@ namespace Omicron
 	public static class Omicron
 	{
 		private static readonly IHttpService HttpService = new HttpService();
+		private static IVariableCollection _variables;
+
+		/// <summary>
+		/// Gets the collection of variables.
+		/// </summary>
+		/// <returns>The collection of variables.</returns>
+		public static IVariableCollection Variables
+		{
+			get
+			{
+				// This is the earliest place that can access the calling assembly to instantiate an instance of the
+				// derived Setup type containing variable set up logic.
+				if (_variables == null)
+				{
+					_variables = new VariableCollection();
+
+					AddVariables(_variables, Assembly.GetCallingAssembly());
+				}
+
+				return _variables;
+			}
+		}
 
 		/// <summary>
 		/// Sends an HTTP request to the specified URI.
@@ -74,5 +99,23 @@ namespace Omicron
 		/// <returns>An <see cref="IRequest"/> object that represents the request.</returns>
 		public static IRequest Trace(string uri)
 			=> Request(HttpMethod.Trace, uri);
+
+		private static void AddVariables(IVariableCollection variables, Assembly assembly)
+		{
+			// Create an instance of each type in the target assembly that derives from Setup and is not abstract and
+			// has a parameterless constructor
+			var setups = assembly
+				.GetTypes()
+				.Where(x => x.IsSubclassOf(typeof(Setup)))
+				.Where(x => !x.IsAbstract)
+				.Where(x => x.GetConstructor(Type.EmptyTypes) != null)
+				.Select(Activator.CreateInstance)
+				.Cast<Setup>();
+
+			foreach (var setup in setups)
+			{
+				setup.AddVariables(variables);
+			}
+		}
 	}
 }
