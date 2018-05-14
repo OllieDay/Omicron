@@ -9,13 +9,13 @@ namespace Omicron
 	public interface IResponse : IAsserter, IDisposable
 	{
 		/// <summary>
-		/// Gets the <see cref="IIs"/> object that can be used to add assertions to the response.
+		/// Gets the <see cref="IIs"/> object used to add assertions to the response.
 		/// </summary>
 		/// <returns>The <see cref="IIs"/> object used to add assertions.</returns>
 		IIs Is { get; }
 
 		/// <summary>
-		/// Gets the <see cref="IHas"/> object that can be used to add assertions to the response.
+		/// Gets the <see cref="IHas"/> object used to add assertions to the response.
 		/// </summary>
 		/// <returns>The <see cref="IHas"/> object used to add assertions.</returns>
 		IHas Has { get; }
