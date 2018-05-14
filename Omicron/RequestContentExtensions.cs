@@ -35,7 +35,7 @@ namespace Omicron
 			=> @this.ByteArray(new ByteArrayContent(content));
 
 		/// <summary>
-		/// Sets the content of the request to the specified content with offset and count.
+		/// Sets the content of the request to the specified content.
 		/// </summary>
 		/// <param name="content">The HTTP content.</param>
 		/// <param name="offset">The offset, in bytes, in the <paramref name="content"/> parameter.</param>
@@ -55,7 +55,7 @@ namespace Omicron
 		/// <summary>
 		/// Sets the content of the request to the specified content.
 		/// </summary>
-		/// <param name="nameValueCollection">The collection of name/value pairs.</param>
+		/// <param name="nameValueCollection">A collection of name/value pairs.</param>
 		/// <returns>An <see cref="IRequest"/> object that represents the request.</returns>
 		public static IRequest FormUrlEncoded(this IWith @this, IEnumerable<KeyValuePair<string, string>> nameValueCollection)
 			=> @this.FormUrlEncoded(new FormUrlEncodedContent(nameValueCollection));
@@ -77,7 +77,7 @@ namespace Omicron
 			=> @this.String(new StringContent(content));
 
 		/// <summary>
-		/// Sets the content of the request to the specified content with encoding.
+		/// Sets the content of the request to the specified content.
 		/// </summary>
 		/// <param name="content">The HTTP content.</param>
 		/// <param name="encoding">The encoding to use for the content.</param>
@@ -86,7 +86,7 @@ namespace Omicron
 			=> @this.String(new StringContent(content, encoding));
 
 		/// <summary>
-		/// Sets the content of the request to the specified content with encoding and media type.
+		/// Sets the content of the request to the specified content.
 		/// </summary>
 		/// <param name="content">The HTTP content.</param>
 		/// <param name="encoding">The encoding to use for the content.</param>
@@ -96,10 +96,10 @@ namespace Omicron
 			=> @this.String(new StringContent(content, encoding, mediaType));
 
 		/// <summary>
-		/// Sets the content of the request to the specified content with values.
+		/// Sets the content of the request to the specified content.
 		/// </summary>
 		/// <param name="content">The HTTP content.</param>
-		/// <param name="values">TThe values for the multipart content.</param>
+		/// <param name="values">The HTTP content to add to the collection.</param>
 		/// <returns>An <see cref="IRequest"/> object that represents the request.</returns>
 		private static IRequest Multipart(this IWith @this, MultipartContent content, params HttpContent[] values)
 			=> @this.Modify(SetMultipartContentWithValues(content, values));
@@ -107,7 +107,7 @@ namespace Omicron
 		/// <summary>
 		/// Sets the content of the request to the specified values.
 		/// </summary>
-		/// <param name="values">The values for the multipart content.</param>
+		/// <param name="values">The HTTP content to add to the collection.</param>
 		/// <returns>An <see cref="IRequest"/> object that represents the request.</returns>
 		public static IRequest Multipart(this IWith @this, params HttpContent[] values)
 			=> @this.Multipart(new MultipartContent(), values);
@@ -116,7 +116,7 @@ namespace Omicron
 		/// Sets the content of the request to the specified values with subtype.
 		/// </summary>
 		/// <param name="subtype">The subtype of the multipart content.</param>
-		/// <param name="values">The values for the multipart content.</param>
+		/// <param name="values">The HTTP content to add to the collection.</param>
 		/// <returns>An <see cref="IRequest"/> object that represents the request.</returns>
 		public static IRequest Multipart(this IWith @this, string subtype, params HttpContent[] values)
 			=> @this.Multipart(new MultipartContent(subtype), values);
@@ -126,7 +126,7 @@ namespace Omicron
 		/// </summary>
 		/// <param name="subtype">The subtype of the multipart content.</param>
 		/// <param name="boundary">The boundary string for the multipart content.</param>
-		/// <param name="values">The values for the multipart content.</param>
+		/// <param name="values">The HTTP content to add to the collection.</param>
 		/// <returns>An <see cref="IRequest"/> object that represents the request.</returns>
 		public static IRequest Multipart(this IWith @this, string subtype, string boundary, params HttpContent[] values)
 			=> @this.Multipart(new MultipartContent(subtype, boundary), values);
@@ -135,7 +135,7 @@ namespace Omicron
 		/// Sets the content of the request to the specified content with values.
 		/// </summary>
 		/// <param name="content">The HTTP content.</param>
-		/// <param name="values">The values for the multipart form data content.</param>
+		/// <param name="values">The HTTP content to add to the collection.</param>
 		/// <returns>An <see cref="IRequest"/> object that represents the request.</returns>
 		private static IRequest MultipartFormData(this IWith @this, MultipartFormDataContent content, params HttpContent[] values)
 			=> @this.Modify(SetMultipartFormDataContentWithValues(content, values));
@@ -143,7 +143,7 @@ namespace Omicron
 		/// <summary>
 		/// Sets the content of the request to the specified values.
 		/// </summary>
-		/// <param name="values">The values for the multipart form data content.</param>
+		/// <param name="values">The HTTP content to add to the collection.</param>
 		/// <returns>An <see cref="IRequest"/> object that represents the request.</returns>
 		public static IRequest MultipartFormData(this IWith @this, params HttpContent[] values)
 			=> @this.MultipartFormData(new MultipartFormDataContent(), values);
@@ -152,7 +152,7 @@ namespace Omicron
 		/// Sets the content of the request to the specified values with boundary.
 		/// </summary>
 		/// <param name="boundary">The boundary string for the multipart form data content.</param>
-		/// <param name="values">The values for the multipart form data content.</param>
+		/// <param name="values">The HTTP content to add to the collection.</param>
 		/// <returns>An <see cref="IRequest"/> object that represents the request.</returns>
 		public static IRequest MultipartFormData(this IWith @this, string boundary, params HttpContent[] values)
 			=> @this.MultipartFormData(new MultipartFormDataContent(boundary), values);
