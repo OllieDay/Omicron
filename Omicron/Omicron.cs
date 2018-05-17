@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
@@ -102,20 +103,61 @@ namespace Omicron
 
 		private static void AddVariables(IVariableCollection variables, Assembly assembly)
 		{
-			// Create an instance of each type in the target assembly that derives from Setup and is not abstract and
-			// has a parameterless constructor
-			var setups = assembly
-				.GetTypes()
-				.Where(x => x.IsSubclassOf(typeof(Setup)))
-				.Where(x => !x.IsAbstract)
-				.Where(x => x.GetConstructor(Type.EmptyTypes) != null)
-				.Select(Activator.CreateInstance)
-				.Cast<Setup>();
+			var setups = GetSetups(assembly);
 
 			foreach (var setup in setups)
 			{
 				setup.AddVariables(variables);
 			}
 		}
+
+		private static IEnumerable<ISetup> GetSetups(Assembly assembly)
+		{
+			// Create an instance of each type in the target assembly that implements ISetup, is not an interface, is
+			// not abstract, has a parameterless constructor, and either doesn't have EnvironmentAttribute or has an
+			// EnvironmentAttribute that matches OMICRON_ENVIRONMENT (if set). Order so that types that don't have the
+			// EnvironmentAttribute come first as these are used to set global variables - environment variables should
+			// be set afterwards to overwrite them.
+
+			return assembly
+				.GetTypes()
+				.Where(IsSetup)
+				.Where(IsInstantiable)
+				.Where(IsGlobalOrCurrentEnvironmentSetup)
+				.OrderBy(GlobalThenEnvironmentSetup)
+				.Select(Activator.CreateInstance)
+				.Cast<ISetup>();
+		}
+
+		private static bool IsSetup(Type type)
+			=> typeof(ISetup).IsAssignableFrom(type);
+
+		private static bool IsInstantiable(Type type)
+			=> !type.IsInterface && !type.IsAbstract && HasParameterlessConstructor(type);
+
+		private static bool HasParameterlessConstructor(Type type)
+			=> type.GetConstructor(Type.EmptyTypes) != null;
+
+		private static bool IsGlobalOrCurrentEnvironmentSetup(Type type)
+			=> IsGlobalSetup(type) || IsCurrentEnvironmentSetup(type);
+
+		private static bool IsGlobalSetup(Type type)
+			=> !type.IsDefined(typeof(EnvironmentAttribute));
+
+		private static bool IsCurrentEnvironmentSetup(Type type)
+		{
+			var environment = GetCurrentEnvironment();
+
+			return type
+				.GetCustomAttributes(typeof(EnvironmentAttribute), inherit: false)
+				.Cast<EnvironmentAttribute>()
+				.Any(x => x.Name == environment);
+		}
+
+		private static bool GlobalThenEnvironmentSetup(Type type)
+			=> !IsGlobalSetup(type);
+
+		private static string GetCurrentEnvironment()
+			=> Environment.GetEnvironmentVariable("OMICRON_ENVIRONMENT");
 	}
 }
