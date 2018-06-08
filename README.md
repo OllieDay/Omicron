@@ -3,32 +3,32 @@ Fluent REST API testing.
 
 ```csharp
 O.Get("api.example.com/widgets")
-	.Is.OK();
+    .Is.OK();
 ```
 
 ```csharp
 O.Get("api.example.com/widgets/1")
-	.Is.NotFound();
+    .Is.NotFound();
 ```
 
 ```csharp
 var widget = new
 {
-	Name = "Super Widget"
+    Name = "Super Widget"
 };
 
 O.Put("api.example.com/widgets/1")
-	.With.Json(widget)
-	.Has.Status(201);
+    .With.Json(widget)
+    .Has.Status(201);
 ```
 
 ```csharp
 O.Delete("api.example.com/widgets/1")
-	.Is.Unauthorized();
+    .Is.Unauthorized();
 ```
 
 ```csharp
 O.Delete("api.example.com/widgets/1")
-	.With.Authorization("Bearer", "xWd3jyM7")
-	.Is.Not.Unauthorized();
+    .With.Authorization("Bearer", "xWd3jyM7")
+    .Is.Not.Unauthorized();
 ```
