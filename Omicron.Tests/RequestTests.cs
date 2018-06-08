@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Omicron.Tests
 {
-	public sealed class OmicronTests
+	public sealed class RequestTests
 	{
 		[Fact]
 		public void ShouldNotThrowExceptionWhenNoAssertionsFail()
