@@ -10,7 +10,7 @@ namespace Omicron
 	/// <summary>
 	/// Used to create <see cref="IRequest"/> objects that represent an HTTP request.
 	/// </summary>
-	public static class Omicron
+	public static class O
 	{
 		private static readonly IHttpService HttpService = new HttpService();
 		private static IVariableCollection _variables;
